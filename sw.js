@@ -1,7 +1,7 @@
 /* Bitácora — service worker
    Cachea el shell para uso offline y dispara un recordatorio diario
    (best-effort) cuando la PWA está instalada. */
-const VERSION = 'bitacora-v1';
+const VERSION = 'bitacora-v2';
 const SHELL = [
   './',
   'index.html',
@@ -67,7 +67,9 @@ async function remind() {
 
     const now = new Date();
     const day = (now.getDay() + 6) % 7; // 0 = lunes
-    if (!(cfg.dias || []).includes(day)) return;
+    const isPar = cfg.parashaDia != null && day === cfg.parashaDia;
+    const isGen = (cfg.dias || []).includes(day);
+    if (!isPar && !isGen) return;
 
     const today = now.getFullYear() + '-' +
       String(now.getMonth() + 1).padStart(2, '0') + '-' +
@@ -77,7 +79,7 @@ async function remind() {
     if (last === today) return; // ya notificado hoy
 
     await self.registration.showNotification('Bitácora', {
-      body: '¿Registramos tu práctica de hoy?',
+      body: isPar ? 'Prepara la parashá de esta semana' : '¿Registramos tu práctica de hoy?',
       icon: 'icon-192.png',
       badge: 'icon-192.png',
       tag: 'bitacora-daily'
