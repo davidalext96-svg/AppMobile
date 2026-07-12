@@ -1,7 +1,7 @@
 /* Bitácora — service worker
    Cachea el shell para uso offline y dispara un recordatorio diario
    (best-effort) cuando la PWA está instalada. */
-const VERSION = 'bitacora-v2';
+const VERSION = 'bitacora-v3';
 const SHELL = [
   './',
   'index.html',

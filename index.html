@@ -14,7 +14,7 @@
 <title>Bitácora — Aficiones</title>
 <style>
 :root{
-  --accent-lit:#C6821E; --accent-esc:#6D5AE6; --accent-mma:#D2413A; --accent-bai:#159A8C; --accent-esp:#2F80B8;
+  --accent-lit:#C6821E; --accent-esc:#6D5AE6; --accent-mma:#D2413A; --accent-bai:#159A8C; --accent-esp:#2F80B8; --accent-cine:#7C4DD1;
   --bg:#F5F3EE; --surface:#FFFFFF; --surface-2:#FBFAF7; --border:#E6E0D5;
   --text:#221F1A; --text-dim:#6B665C; --text-faint:#9C978C;
   --header-bg:rgba(255,255,255,.88);
@@ -24,11 +24,11 @@
   --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --font-mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Roboto Mono",Menlo,Consolas,monospace;
 }
-[data-theme="gris"]{
-  --bg:#E7E9EC; --surface:#F6F7F9; --surface-2:#EDEFF2; --border:#D2D6DC;
-  --text:#22262D; --text-dim:#59606A; --text-faint:#899098;
-  --header-bg:rgba(246,247,249,.9);
-  --shadow:0 1px 2px rgba(20,25,35,.06), 0 8px 24px rgba(20,25,35,.07);
+[data-theme="azul"]{
+  --bg:#0E1A2B; --surface:#16273D; --surface-2:#1D3049; --border:#2B4568;
+  --text:#EAF1FA; --text-dim:#9FB4CE; --text-faint:#5F779A;
+  --header-bg:rgba(22,39,61,.9);
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.35);
 }
 [data-theme="oscuro"]{
   --bg:#121419; --surface:#1C1F26; --surface-2:#22262F; --border:#2D323C;
@@ -326,6 +326,19 @@ body[data-font="elegante"]{--font-display:"Baskerville","Hoefler Text","Big Casl
 .theme-opt.on{border-color:var(--accent-esc)}
 .theme-opt .tsw{width:26px;height:26px;border-radius:8px;border:1px solid var(--border);flex:none}
 .theme-opt .tname{flex:1;font-weight:600;font-size:14px}
+/* segmentado */
+.seg{display:flex;gap:4px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:16px}
+.seg-b{flex:1;padding:9px 8px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--text-dim);transition:.12s}
+.seg-b.on{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+/* temporadas (series) */
+.season{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--surface-2)}
+.season-h{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.season-h b{flex:1;font-size:13.5px}
+.season-h .rm{color:var(--text-faint);font-size:13px;width:24px;height:24px;border-radius:7px;display:grid;place-items:center}
+.season-h .rm:active{background:var(--border);color:var(--accent-mma)}
+.season .srow{display:flex;gap:8px;margin-bottom:8px}
+.season .srow select,.season .srow input{padding:9px 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+.season textarea{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);min-height:60px;resize:vertical}
 </style>
 </head>
 <body data-theme="claro">
@@ -377,7 +390,7 @@ body[data-font="elegante"]{--font-display:"Baskerville","Hoefler Text","Big Casl
     <section class="view show" id="v-panel"></section>
     <section class="view" id="v-agenda"></section>
     <section class="view" id="v-lit"></section>
-    <section class="view" id="v-esc"></section>
+    <section class="view" id="v-cine"></section>
     <section class="view" id="v-mma"></section>
     <section class="view" id="v-bai"></section>
     <section class="view" id="v-espir"></section>
@@ -400,10 +413,10 @@ const DB_KEY='bitacora_db_v1', AUTH_KEY='bitacora_auth_v1';
 
 /* ---- catálogo de aficiones ---- */
 const HOBBIES={
-  literatura:{label:'Literatura', short:'Lectura', color:'var(--accent-lit)', hex:'#C6821E', view:'lit',
+  literatura:{label:'Literatura', short:'Literatura', color:'var(--accent-lit)', hex:'#C6821E', view:'lit',
     icon:'<path d="M4 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2V5z"/>'},
-  escritura:{label:'Escritura', short:'Escritura', color:'var(--accent-esc)', hex:'#6D5AE6', view:'esc',
-    icon:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>'},
+  cine:{label:'Cine', short:'Cine', color:'var(--accent-cine)', hex:'#7C4DD1', view:'cine',
+    icon:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M17 7.5h4M3 12h18M3 16.5h4M17 16.5h4"/>'},
   mma:{label:'MMA', short:'MMA', color:'var(--accent-mma)', hex:'#D2413A', view:'mma',
     icon:'<path d="M6 12a6 6 0 0 1 6-6 6 6 0 0 1 6 6"/><path d="M6 12v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-3"/><path d="M9 12V9M12 12V8M15 12V9"/>'},
   baile:{label:'Baile', short:'Baile', color:'var(--accent-bai)', hex:'#159A8C', view:'bai',
@@ -411,29 +424,32 @@ const HOBBIES={
   espiritual:{label:'Espiritual', short:'Espiritual', color:'var(--accent-esp)', hex:'#2F80B8', view:'espir',
     icon:'<path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>'}
 };
+const ESC_ICON='<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>';
 const MMA_TIPOS=['Técnica','Sparring','Físico','Grappling','Cardio','Otro'];
 const BAILE_ESTILOS=['Bachata','Salsa','Merengue','Kizomba','Otro'];
 const ESC_TIPOS=['Diario','Sueño','Anécdota','Novela'];
 const LIB_ESTADOS=['Por leer','Leyendo','Terminado','Abandonado'];
-const DEFAULT_METAS={literatura:{tipo:'tiempo',valor:180},escritura:{tipo:'sesiones',valor:2},mma:{tipo:'sesiones',valor:3},baile:{tipo:'tiempo',valor:120},espiritual:{tipo:'sesiones',valor:1}};
+const DEFAULT_METAS={literatura:{tipo:'tiempo',valor:180},cine:{tipo:'sesiones',valor:0},mma:{tipo:'sesiones',valor:3},baile:{tipo:'tiempo',valor:120},espiritual:{tipo:'sesiones',valor:1}};
 const DEFAULT_REC={activo:true,dias:[0,1,2,3,4],hora:'19:00',notificar:false,parasha:{activo:true,dia:4}};
 const DEFAULT_CONFIG={escTipos:[...ESC_TIPOS],mmaTipos:[...MMA_TIPOS],baileEstilos:[...BAILE_ESTILOS],libroCampos:[]};
 
 /* ---- estado ---- */
 let DB, AUTH, pinBuf='', route='panel', filterHobby='todos', escFilter='todos', nudgeDismissed=false;
 let calYear=new Date().getFullYear(), calMonth=new Date().getMonth(), calSelected=null, deferredInstall=null;
+let litTab='lectura', cineTab='peliculas';
 
 /* ---- persistencia ---- */
 function nid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function loadDB(){
   try{const r=localStorage.getItem(DB_KEY);if(r)return JSON.parse(r)}catch(e){}
-  return {meta:{version:3,creado:new Date().toISOString()},ui:{tema:'claro',fuente:'clasica'},libros:[],escritos:[],registros:[],parashot:[],librosEsp:[],
+  return {meta:{version:4,creado:new Date().toISOString()},ui:{tema:'claro',fuente:'clasica'},libros:[],escritos:[],registros:[],parashot:[],librosEsp:[],peliculas:[],series:[],
     metas:JSON.parse(JSON.stringify(DEFAULT_METAS)),recordatorios:JSON.parse(JSON.stringify(DEFAULT_REC)),config:JSON.parse(JSON.stringify(DEFAULT_CONFIG))};
 }
 function ensureSchema(){
   if(!DB.ui)DB.ui={tema:'claro',fuente:'clasica'};
   if(!DB.ui.fuente)DB.ui.fuente='clasica';
-  ['libros','escritos','registros','parashot','librosEsp'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
+  if(DB.ui.tema==='gris')DB.ui.tema='azul';
+  ['libros','escritos','registros','parashot','librosEsp','peliculas','series'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
   if(!DB.metas)DB.metas=JSON.parse(JSON.stringify(DEFAULT_METAS));
   Object.keys(HOBBIES).forEach(k=>{if(!DB.metas[k])DB.metas[k]=(DEFAULT_METAS[k]?JSON.parse(JSON.stringify(DEFAULT_METAS[k])):{tipo:'tiempo',valor:0})});
   if(!DB.recordatorios)DB.recordatorios=JSON.parse(JSON.stringify(DEFAULT_REC));
@@ -460,12 +476,16 @@ function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show'
 /* actividades unificadas para panel y tabla */
 function allActivities(){
   const out=DB.registros.map(r=>({id:r.id,hobby:r.hobby,fecha:r.fecha,dur:r.duracionMin||0,desc:r.descripcion||'',cat:catOf(r),src:'reg'}));
-  DB.escritos.forEach(e=>out.push({id:e.id,hobby:'escritura',fecha:e.fecha,dur:e.duracionMin||0,
+  DB.escritos.forEach(e=>out.push({id:e.id,hobby:'literatura',fecha:e.fecha,dur:e.duracionMin||0,
     desc:(e.titulo||'(sin título)'),cat:e.tipo||'Escrito',src:'esc',palabras:words(e.contenido)}));
   DB.parashot.forEach(p=>out.push({id:p.id,hobby:'espiritual',fecha:p.fecha,dur:p.duracionMin||0,
     desc:p.nombre||'Parashá',cat:'Parashá',src:'par'}));
   DB.librosEsp.forEach(l=>out.push({id:l.id,hobby:'espiritual',fecha:l.fecha,dur:l.duracionMin||0,
     desc:l.titulo||'Libro',cat:'Libro',src:'libe'}));
+  DB.peliculas.forEach(p=>out.push({id:p.id,hobby:'cine',fecha:p.fecha,dur:p.duracionMin||0,
+    desc:p.nombre||'Película',cat:'Película',src:'peli'}));
+  DB.series.forEach(s=>out.push({id:s.id,hobby:'cine',fecha:s.fecha,dur:0,
+    desc:s.nombre||'Serie',cat:'Serie',src:'serie'}));
   return out.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
 }
 function catOf(r){
@@ -537,8 +557,8 @@ function buildNav(){
   const nav=$('#nav'); nav.innerHTML='';
   const items=[
     {id:'panel',label:'Panel',color:'var(--text)',icon:'<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'},
-    {id:'lit',label:'Lectura',color:HOBBIES.literatura.color,icon:HOBBIES.literatura.icon},
-    {id:'esc',label:'Escritura',color:HOBBIES.escritura.color,icon:HOBBIES.escritura.icon},
+    {id:'lit',label:'Literatura',color:HOBBIES.literatura.color,icon:HOBBIES.literatura.icon},
+    {id:'cine',label:'Cine',color:HOBBIES.cine.color,icon:HOBBIES.cine.icon},
     {id:'mma',label:'MMA',color:HOBBIES.mma.color,icon:HOBBIES.mma.icon},
     {id:'bai',label:'Baile',color:HOBBIES.baile.color,icon:HOBBIES.baile.icon},
     {id:'espir',label:'Espiritual',color:HOBBIES.espiritual.color,icon:HOBBIES.espiritual.icon}
@@ -554,20 +574,20 @@ function buildNav(){
 function go(r){
   route=r;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
-  const vid={panel:'v-panel',agenda:'v-agenda',lit:'v-lit',esc:'v-esc',mma:'v-mma',bai:'v-bai',espir:'v-espir',tabla:'v-tabla'}[r];
+  const vid={panel:'v-panel',agenda:'v-agenda',lit:'v-lit',mma:'v-mma',bai:'v-bai',espir:'v-espir',cine:'v-cine',tabla:'v-tabla'}[r];
   $('#'+vid).classList.add('show');
   document.querySelectorAll('.nav-i').forEach(n=>n.classList.toggle('active',n.dataset.route===r));
   window.scrollTo(0,0);
-  ({panel:renderPanel,agenda:renderAgenda,lit:renderLit,esc:renderEsc,mma:renderMma,bai:renderBai,espir:renderEspir,tabla:renderTabla}[r])();
+  ({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,tabla:renderTabla}[r])();
 }
-function renderCurrent(){({panel:renderPanel,agenda:renderAgenda,lit:renderLit,esc:renderEsc,mma:renderMma,bai:renderBai,espir:renderEspir,tabla:renderTabla}[route]||renderPanel)()}
+function renderCurrent(){({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,tabla:renderTabla}[route]||renderPanel)()}
 
 /* ============================================================
    TEMAS Y TIPOGRAFÍA
    ============================================================ */
 function applyTheme(name,silent){
   document.body.dataset.theme=name;
-  const meta={claro:'#F5F3EE',gris:'#E7E9EC',oscuro:'#121419'}[name]||'#F5F3EE';
+  const meta={claro:'#F5F3EE',azul:'#0E1A2B',oscuro:'#121419'}[name]||'#F5F3EE';
   const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=meta;
   DB.ui.tema=name; if(!silent)saveDB();
 }
@@ -747,7 +767,7 @@ function renderPanel(){
   let html=buildNudge(wp)
     +'<div class="eyebrow">Resumen general</div>'
     +'<div class="h-view">'+(nombre?'Tu semana, '+esc(nombre):'Tu panel')+'</div>'
-    +'<p class="view-lead">El equilibrio entre tus cuatro aficiones, medido en tiempo dedicado.</p>';
+    +'<p class="view-lead">El equilibrio entre tus aficiones, medido en tiempo dedicado.</p>';
 
   html+='<div class="kpis">'
     +kpi(fmtDur(s.totMin).replace(' min','m').replace('h ','h '),'Tiempo total',s.totSes+' sesiones')
@@ -781,8 +801,8 @@ function renderPanel(){
   // mini-resúmenes por afición
   html+='<div class="eyebrow" style="margin:20px 0 10px">Por afición</div>';
   html+='<div class="kpis">'
-    +miniHobby('literatura',fmtDur(s.per.literatura),pags+' págs · '+porLeer+' por leer')
-    +miniHobby('escritura',totPal.toLocaleString('es')+' palabras',DB.escritos.length+' escritos')
+    +miniHobby('literatura',fmtDur(s.per.literatura),DB.libros.length+' libros · '+DB.escritos.length+' escritos')
+    +miniHobby('cine',DB.peliculas.length+' películas',DB.series.length+' series')
     +miniHobby('mma',fmtDur(s.per.mma),s.cnt.mma+' entrenamientos')
     +miniHobby('baile',fmtDur(s.per.baile),s.cnt.baile+' prácticas')
     +miniHobby('espiritual',DB.parashot.length+' parashot',DB.librosEsp.length+' libros')
@@ -828,23 +848,26 @@ function emptyState(t,s){return '<div class="card"><div class="empty">'
    ============================================================ */
 function renderLit(){
   const h=HOBBIES.literatura;
+  let html=viewHead('literatura','Literatura','Tu lectura (biblioteca y sesiones) y tu escritura, en un solo lugar.');
+  html+='<div class="seg"><button class="seg-b'+(litTab==='lectura'?' on':'')+'" onclick="setLitTab(\'lectura\')">Lectura</button>'
+    +'<button class="seg-b'+(litTab==='escritura'?' on':'')+'" onclick="setLitTab(\'escritura\')">Escritura</button></div>';
+  html+=(litTab==='escritura')?litEscrituraHTML():litLecturaHTML(h);
+  $('#v-lit').innerHTML=html;
+}
+function setLitTab(t){litTab=t;renderLit()}
+function litLecturaHTML(h){
   const libros=[...DB.libros].sort((a,b)=>{
     const ord={'Leyendo':0,'Por leer':1,'Terminado':2,'Abandonado':3};
     return (ord[a.estado]-ord[b.estado])||(b.id.localeCompare(a.id));
   });
   const sesiones=DB.registros.filter(r=>r.hobby==='literatura').sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
-
-  let html=viewHead('literatura','Biblioteca y lectura','Controla el libro que lees ahora y los que vendrán después.');
-
-  html+='<button class="btn" style="--accent-esc:'+h.hex+';background:'+h.hex+';margin-bottom:14px" onclick="modalLibro()">'
+  let html='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalLibro()">'
     +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir libro</button>';
-
   if(libros.length){
     html+='<div class="card pad0">'+libros.map(libroRow).join('')+'</div>';
   }else{
     html+=emptyState('Tu biblioteca está vacía','Añade el libro que estás leyendo o los próximos de tu lista.');
   }
-
   html+='<div class="eyebrow" style="margin:22px 0 10px">Sesiones de lectura</div>';
   html+='<button class="btn ghost" style="margin-bottom:14px" onclick="modalSesionLit()">'
     +svgIco('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',17)+' Registrar lectura</button>';
@@ -853,8 +876,24 @@ function renderLit(){
   }else{
     html+=emptyState('Sin sesiones de lectura','Registra cuánto tiempo y qué páginas avanzaste.');
   }
-  $('#v-lit').innerHTML=html;
+  return html;
 }
+function litEscrituraHTML(){
+  let escritos=[...DB.escritos].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
+  if(escFilter!=='todos')escritos=escritos.filter(e=>e.tipo===escFilter);
+  const ec='var(--accent-esc)';
+  let html='<button class="btn" style="background:'+ec+';margin-bottom:14px" onclick="modalEscrito()">'
+    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Nuevo escrito</button>';
+  html+='<div class="filters"><span class="tag'+(escFilter==='todos'?' on':'')+'" style="'+(escFilter==='todos'?'background:'+ec:'')+'" onclick="setEscFilter(\'todos\')">Todos</span>'
+    +DB.config.escTipos.map(t=>'<span class="tag'+(escFilter===t?' on':'')+'" style="'+(escFilter===t?'background:'+ec:'')+'" onclick="setEscFilter(\''+esc(t)+'\')">'+esc(t)+'</span>').join('')+'</div>';
+  if(escritos.length){
+    html+='<div class="card pad0">'+escritos.map(escritoRow).join('')+'</div>';
+  }else{
+    html+=emptyState('Nada escrito todavía','Captura una idea, un sueño de anoche o el primer párrafo de tu novela.');
+  }
+  return html;
+}
+function setEscFilter(t){escFilter=t;renderLit()}
 function libTitle(id){const l=DB.libros.find(x=>x.id===id);return l?l.titulo:''}
 function libroRow(l){
   const pct=l.paginas?Math.min(100,Math.round((l.paginaActual||0)/l.paginas*100)):0;
@@ -870,36 +909,11 @@ function libroRow(l){
     +'<button class="del" onclick="modalLibro(\''+l.id+'\')">'+svgIco('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',16)+'</button>'
     +'</div>';
 }
-
-/* ============================================================
-   ESCRITURA
-   ============================================================ */
-function renderEsc(){
-  const h=HOBBIES.escritura;
-  let escritos=[...DB.escritos].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
-  if(escFilter!=='todos')escritos=escritos.filter(e=>e.tipo===escFilter);
-
-  let html=viewHead('escritura','Escritura','Tu espacio para diario, sueños, anécdotas y novelas propias.');
-
-  html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalEscrito()">'
-    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Nuevo escrito</button>';
-
-  html+='<div class="filters"><span class="tag'+(escFilter==='todos'?' on':'')+'" style="'+(escFilter==='todos'?'background:'+h.hex:'')+'" onclick="setEscFilter(\'todos\')">Todos</span>'
-    +DB.config.escTipos.map(t=>'<span class="tag'+(escFilter===t?' on':'')+'" style="'+(escFilter===t?'background:'+h.hex:'')+'" onclick="setEscFilter(\''+esc(t)+'\')">'+esc(t)+'</span>').join('')+'</div>';
-
-  if(escritos.length){
-    html+='<div class="card pad0">'+escritos.map(escritoRow).join('')+'</div>';
-  }else{
-    html+=emptyState('Nada escrito todavía','Captura una idea, un sueño de anoche o el primer párrafo de tu novela.');
-  }
-  $('#v-esc').innerHTML=html;
-}
-function setEscFilter(t){escFilter=t;renderEsc()}
 function escritoRow(e){
   const tc={'Diario':'#6D5AE6','Sueño':'#159A8C','Anécdota':'#C6821E','Novela':'#D2413A'}[e.tipo]||'#6D5AE6';
   const preview=(e.contenido||'').replace(/\s+/g,' ').slice(0,90);
   return '<div class="item" onclick="modalEscrito(\''+e.id+'\')" style="cursor:pointer">'
-    +'<div class="ico" style="background:'+tc+'">'+svgIco(HOBBIES.escritura.icon,17)+'</div>'
+    +'<div class="ico" style="background:'+tc+'">'+svgIco(ESC_ICON,17)+'</div>'
     +'<div class="body"><div class="t1">'+esc(e.titulo||'(sin título)')
     +' <span class="chip" style="background:'+tc+'22;color:'+tc+'">'+esc(e.tipo)+'</span></div>'
     +(preview?'<div class="t2">'+esc(preview)+(e.contenido.length>90?'…':'')+'</div>':'')
@@ -1096,6 +1110,118 @@ function saveLibroEsp(id){
 }
 
 /* ============================================================
+   CINE (Películas y Series)
+   ============================================================ */
+function renderCine(){
+  const h=HOBBIES.cine;
+  let html=viewHead('cine','Cine','Tus películas y series, con calificaciones y reseñas.');
+  html+='<div class="kpis">'
+    +kpi(DB.peliculas.length,'Películas','vistas')
+    +kpi(DB.series.length,'Series','seguidas')
+    +'</div>';
+  html+='<div class="seg"><button class="seg-b'+(cineTab==='peliculas'?' on':'')+'" onclick="setCineTab(\'peliculas\')">Películas</button>'
+    +'<button class="seg-b'+(cineTab==='series'?' on':'')+'" onclick="setCineTab(\'series\')">Series</button></div>';
+  html+=(cineTab==='series')?cineSeriesHTML(h):cinePeliculasHTML(h);
+  $('#v-cine').innerHTML=html;
+}
+function setCineTab(t){cineTab=t;renderCine()}
+function cinePeliculasHTML(h){
+  const pelis=[...DB.peliculas].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
+  let html='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalPelicula()">'
+    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir película</button>';
+  if(pelis.length)html+='<div class="card pad0">'+pelis.map(peliRow).join('')+'</div>';
+  else html+=emptyState('Sin películas','Registra una película que viste, con su calificación.');
+  return html;
+}
+function cineSeriesHTML(h){
+  const series=[...DB.series].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
+  let html='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalSerie()">'
+    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir serie</button>';
+  if(series.length)html+='<div class="card pad0">'+series.map(serieRow).join('')+'</div>';
+  else html+=emptyState('Sin series','Registra una serie con calificación y reseña por temporada.');
+  return html;
+}
+function peliRow(p){
+  const stars=p.calificacion?'★'.repeat(p.calificacion):'';
+  return '<div class="item" style="cursor:pointer" onclick="activityDetail(\'peli\',\''+p.id+'\')">'
+    +'<div class="ico" style="background:var(--accent-cine)">'+svgIco(HOBBIES.cine.icon,17)+'</div>'
+    +'<div class="body"><div class="t1">'+esc(p.nombre||'Película')+(p.anio?' <span class="chip" style="background:var(--accent-cine)22;color:var(--accent-cine)">'+esc(p.anio)+'</span>':'')+'</div>'
+    +(p.director?'<div class="t2">'+esc(p.director)+'</div>':'')
+    +'<div class="t3"><span>'+fmtDate(p.fecha)+'</span>'+(stars?'<span style="color:var(--accent-cine)">'+stars+'</span>':'')+'</div></div>'
+    +'<button class="del" onclick="event.stopPropagation();delActivity(\'peli\',\''+p.id+'\')">'+svgIco('<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',16)+'</button></div>';
+}
+function serieRow(s){
+  const temps=s.temporadas||[];
+  const cals=temps.filter(t=>t.calificacion).map(t=>t.calificacion);
+  const prom=cals.length?(cals.reduce((a,b)=>a+b,0)/cals.length):0;
+  return '<div class="item" style="cursor:pointer" onclick="activityDetail(\'serie\',\''+s.id+'\')">'
+    +'<div class="ico" style="background:var(--accent-cine)">'+svgIco(HOBBIES.cine.icon,17)+'</div>'
+    +'<div class="body"><div class="t1">'+esc(s.nombre||'Serie')+' <span class="chip" style="background:var(--accent-cine)22;color:var(--accent-cine)">'+temps.length+' temp</span></div>'
+    +(prom?'<div class="t2" style="color:var(--accent-cine)">'+'★'.repeat(Math.round(prom))+' <span style="color:var(--text-faint)">('+prom.toFixed(1)+' prom)</span></div>':'')
+    +'<div class="t3"><span>'+fmtDate(s.fecha)+'</span></div></div>'
+    +'<button class="del" onclick="event.stopPropagation();delActivity(\'serie\',\''+s.id+'\')">'+svgIco('<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',16)+'</button></div>';
+}
+function modalPelicula(id){
+  const p=id?DB.peliculas.find(x=>x.id===id):null;
+  openModal('<h3>'+(p?'Editar película':'Añadir película')+'</h3><p class="msub">Registra la película que viste.</p>'
+    +'<div class="field"><label>Nombre</label><input id="pl_nom" style="--fc:var(--accent-cine)" value="'+esc(p?p.nombre:'')+'" placeholder="Ej. El Padrino"></div>'
+    +'<div class="row2"><div class="field"><label>Director</label><input id="pl_dir" style="--fc:var(--accent-cine)" value="'+esc(p?p.director:'')+'" placeholder="Opcional"></div>'
+    +'<div class="field"><label>Año</label><input id="pl_anio" type="number" style="--fc:var(--accent-cine)" value="'+(p?p.anio||'':'')+'" placeholder="1972"></div></div>'
+    +'<div class="row2"><div class="field"><label>Fecha vista</label><input id="pl_fecha" type="date" style="--fc:var(--accent-cine)" value="'+(p?p.fecha:todayISO())+'"></div>'
+    +'<div class="field"><label>Calificación</label><select id="pl_cal" style="--fc:var(--accent-cine)"><option value="0">—</option>'+[1,2,3,4,5].map(n=>'<option value="'+n+'"'+(p&&p.calificacion===n?' selected':'')+'>'+'★'.repeat(n)+'</option>').join('')+'</select></div></div>'
+    +'<div class="field"><label>Comentarios</label><textarea id="pl_com" style="--fc:var(--accent-cine)" placeholder="Qué te pareció, escenas, ideas...">'+esc(p?p.comentarios:'')+'</textarea></div>'
+    +'<div class="field"><label>Duración (min)</label><input id="pl_dur" type="number" min="0" style="--fc:var(--accent-cine)" value="'+(p?p.duracionMin||'':'')+'" placeholder="Opcional"></div>'
+    +'<button class="btn" style="background:var(--accent-cine)" onclick="savePelicula('+(p?"'"+p.id+"'":'null')+')">Guardar</button>'
+    +(p?'<button class="btn ghost" style="margin-top:8px;color:var(--accent-mma)" onclick="delActivity(\'peli\',\''+p.id+'\',true)">Eliminar película</button>':''));
+}
+function savePelicula(id){
+  const nom=$('#pl_nom').value.trim();if(!nom){toast('Escribe el nombre');return}
+  const obj={nombre:nom,director:$('#pl_dir').value.trim(),anio:+$('#pl_anio').value||'',fecha:$('#pl_fecha').value||todayISO(),
+    calificacion:+$('#pl_cal').value||0,comentarios:$('#pl_com').value.trim(),duracionMin:+$('#pl_dur').value||0};
+  if(id){const p=DB.peliculas.find(x=>x.id===id);Object.assign(p,obj)}
+  else{obj.id=nid();DB.peliculas.push(obj)}
+  saveDB();closeModal();renderCurrent();toast('Película guardada');
+}
+function seasonBlock(t){
+  t=t||{num:'',calificacion:0,resena:''};
+  return '<div class="season"><div class="season-h"><b style="flex:none">Temporada</b>'
+    +'<input class="s-num" type="number" min="1" value="'+(t.num||'')+'" placeholder="#" style="width:62px">'
+    +'<span style="flex:1"></span>'
+    +'<select class="s-cal"><option value="0">— ★</option>'+[1,2,3,4,5].map(n=>'<option value="'+n+'"'+(t.calificacion===n?' selected':'')+'>'+'★'.repeat(n)+'</option>').join('')+'</select>'
+    +'<button class="rm" onclick="this.closest(\'.season\').remove()">&times;</button></div>'
+    +'<textarea class="s-res" placeholder="Reseña de la temporada...">'+esc(t.resena||'')+'</textarea></div>';
+}
+function modalSerie(id){
+  const s=id?DB.series.find(x=>x.id===id):null;
+  const temps=(s&&s.temporadas&&s.temporadas.length)?s.temporadas:[{num:1,calificacion:0,resena:''}];
+  openModal('<h3>'+(s?'Editar serie':'Añadir serie')+'</h3><p class="msub">Calificación y reseña por temporada.</p>'
+    +'<div class="row2"><div class="field"><label>Nombre</label><input id="se_nom" style="--fc:var(--accent-cine)" value="'+esc(s?s.nombre:'')+'" placeholder="Ej. Breaking Bad"></div>'
+    +'<div class="field"><label>Fecha</label><input id="se_fecha" type="date" style="--fc:var(--accent-cine)" value="'+(s?s.fecha:todayISO())+'"></div></div>'
+    +'<div class="eyebrow" style="margin:6px 0 10px">Temporadas</div>'
+    +'<div id="seasonsWrap">'+temps.map(seasonBlock).join('')+'</div>'
+    +'<button class="btn ghost btn-sm" style="width:auto;margin-bottom:14px" onclick="addSeason()">'+svgIco('<path d="M12 5v14M5 12h14"/>',15)+' Añadir temporada</button>'
+    +'<button class="btn" style="background:var(--accent-cine)" onclick="saveSerie('+(s?"'"+s.id+"'":'null')+')">Guardar</button>'
+    +(s?'<button class="btn ghost" style="margin-top:8px;color:var(--accent-mma)" onclick="delActivity(\'serie\',\''+s.id+'\',true)">Eliminar serie</button>':''));
+}
+function addSeason(){
+  const wrap=document.getElementById('seasonsWrap');
+  const next=wrap.querySelectorAll('.season').length+1;
+  wrap.insertAdjacentHTML('beforeend',seasonBlock({num:next,calificacion:0,resena:''}));
+}
+function saveSerie(id){
+  const nom=$('#se_nom').value.trim();if(!nom){toast('Escribe el nombre');return}
+  const temporadas=[...document.querySelectorAll('#seasonsWrap .season')].map((el,i)=>({
+    num:+el.querySelector('.s-num').value||(i+1),
+    calificacion:+el.querySelector('.s-cal').value||0,
+    resena:el.querySelector('.s-res').value.trim()
+  }));
+  const obj={nombre:nom,fecha:$('#se_fecha').value||todayISO(),temporadas:temporadas};
+  if(id){const s=DB.series.find(x=>x.id===id);Object.assign(s,obj)}
+  else{obj.id=nid();DB.series.push(obj)}
+  saveDB();closeModal();renderCurrent();toast('Serie guardada');
+}
+
+/* ============================================================
    TABLA DE RESULTADOS
    ============================================================ */
 function renderTabla(){
@@ -1201,13 +1327,15 @@ function goToday(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMont
 function detailRow(k,v){return '<div class="dr"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>'}
 function activityDetail(src,id){
   let rec,hobby;
-  if(src==='esc'){rec=DB.escritos.find(x=>x.id===id);hobby='escritura'}
+  if(src==='esc'){rec=DB.escritos.find(x=>x.id===id);hobby='literatura'}
   else if(src==='par'){rec=DB.parashot.find(x=>x.id===id);hobby='espiritual'}
   else if(src==='libe'){rec=DB.librosEsp.find(x=>x.id===id);hobby='espiritual'}
+  else if(src==='peli'){rec=DB.peliculas.find(x=>x.id===id);hobby='cine'}
+  else if(src==='serie'){rec=DB.series.find(x=>x.id===id);hobby='cine'}
   else{rec=DB.registros.find(x=>x.id===id);hobby=rec?rec.hobby:null}
   if(!rec||!hobby){toast('Registro no encontrado');return}
   const h=HOBBIES[hobby];
-  let title='', fields=[], blockLabel='Descripción', blockText='', editCall='';
+  let title='', fields=[], blockLabel='Descripción', blockText='', editCall='', extraHtml='';
   if(src==='esc'){
     title=rec.titulo||'(sin título)';
     fields=[['Tipo',rec.tipo],['Palabras',words(rec.contenido)],['Tiempo dedicado',rec.duracionMin?fmtDur(rec.duracionMin):'—']];
@@ -1220,6 +1348,19 @@ function activityDetail(src,id){
     title=rec.titulo||'Libro';
     fields=[['Autor',rec.autor||'—'],['Calificación',rec.calificacion?'★'.repeat(rec.calificacion):'—'],['Tiempo',rec.duracionMin?fmtDur(rec.duracionMin):'—']];
     blockText=rec.descripcion||''; editCall='modalLibroEsp(\''+id+'\')';
+  }else if(src==='peli'){
+    title=rec.nombre||'Película';
+    fields=[['Director',rec.director||'—'],['Año',rec.anio||'—'],['Calificación',rec.calificacion?'★'.repeat(rec.calificacion):'—']];
+    blockLabel='Comentarios'; blockText=rec.comentarios||''; editCall='modalPelicula(\''+id+'\')';
+  }else if(src==='serie'){
+    const temps=rec.temporadas||[];
+    title=rec.nombre||'Serie';
+    fields=[['Temporadas',temps.length]];
+    editCall='modalSerie(\''+id+'\')';
+    extraHtml=temps.map(t=>'<div class="season" style="background:var(--surface)"><div class="season-h"><b>Temporada '+esc(t.num)+'</b>'
+      +(t.calificacion?'<span style="color:var(--accent-cine)">'+'★'.repeat(t.calificacion)+'</span>':'')+'</div>'
+      +(t.resena?'<div style="font-size:13px;color:var(--text-dim);white-space:pre-wrap;line-height:1.55">'+esc(t.resena)+'</div>':'<div style="font-size:12.5px;color:var(--text-faint)">Sin reseña</div>')+'</div>').join('');
+    if(temps.length)extraHtml='<div class="eyebrow" style="margin:2px 0 8px">Temporadas</div>'+extraHtml;
   }else if(hobby==='literatura'){
     const lib=rec.meta&&libTitle(rec.meta.libroId);
     title=lib||'Sesión de lectura';
@@ -1242,6 +1383,7 @@ function activityDetail(src,id){
   if(blockText){
     html+='<div class="eyebrow" style="margin-bottom:8px">'+blockLabel+'</div><div class="detail-block">'+esc(blockText)+'</div>';
   }
+  if(extraHtml)html+=extraHtml;
   html+='<button class="btn ghost" style="margin-top:10px" onclick="closeModal();'+editCall+'">Editar</button>'
     +'<button class="btn ghost" style="margin-top:8px;color:var(--accent-mma)" onclick="delActivity(\''+src+'\',\''+id+'\',true)">Eliminar</button>';
   openModal(html);
@@ -1279,6 +1421,7 @@ function openSettings(){
     +setRow('<path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6M12 4v16"/>','Tipo de letra',fuenteN,'modalFuente()')
     +setRow('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>','Tema',temaN,'modalTema()')
     +setRow('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>','Metas y recordatorios','Objetivos semanales y avisos','modalMetas()')
+    +setRow('<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>','Dashboard','Resumen y exportación por mes','modalDashboard()')
     +setRow('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>','Respaldo y datos','Descargar o importar tu información','openBackup()');
   if(deferredInstall)html+=setRow('<path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="17" width="16" height="4" rx="1"/>','Instalar app','Añadir a tu dispositivo','doInstall()');
   openModal(html);
@@ -1321,7 +1464,7 @@ function pickFont(id){applyFont(id);modalFuente();toast('Tipografía '+ (FUENTES
 
 /* --- Tema --- */
 function modalTema(){
-  const opts=[['claro','Claro','#F5F3EE'],['gris','Gris','#C9CDD3'],['oscuro','Oscuro','#1C1F26']];
+  const opts=[['claro','Claro','#F5F3EE'],['azul','Azul oscuro','#16273D'],['oscuro','Oscuro','#1C1F26']];
   let html='<h3>Tema</h3><p class="msub">Elige la apariencia de la app.</p>';
   html+=opts.map(o=>'<button class="theme-opt'+(DB.ui.tema===o[0]?' on':'')+'" onclick="pickTheme(\''+o[0]+'\')">'
     +'<span class="tsw" style="background:'+o[2]+'"></span><span class="tname">'+o[1]+'</span>'
@@ -1360,6 +1503,39 @@ function removeMma(i){DB.config.mmaTipos.splice(i,1);saveDB();modalSecciones()}
 function removeBai(i){DB.config.baileEstilos.splice(i,1);saveDB();modalSecciones()}
 function addLibroCampo(){const v=$('#add_libroCampo').value.trim();if(!v)return;DB.config.libroCampos.push({id:nid(),label:v});saveDB();modalSecciones()}
 function removeLibroCampo(i){DB.config.libroCampos.splice(i,1);saveDB();modalSecciones()}
+
+/* --- Dashboard mensual (resumen + exportación) --- */
+function mesActualISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function nombreMes(mes){const p=mes.split('-');return MESES[+p[1]-1]+' '+p[0]}
+function modalDashboard(mes){
+  mes=mes||mesActualISO();
+  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,7)===mes);
+  const totMin=acts.reduce((s,a)=>s+a.dur,0);
+  const per={};Object.keys(HOBBIES).forEach(k=>per[k]={min:0,n:0});
+  acts.forEach(a=>{if(per[a.hobby]){per[a.hobby].min+=a.dur;per[a.hobby].n++}});
+  let rows=Object.keys(HOBBIES).map(k=>{
+    const p=per[k],h=HOBBIES[k];if(p.n===0)return '';
+    const pct=totMin?Math.round(p.min/totMin*100):0;
+    return '<div class="goal"><div class="goal-top"><span class="dot" style="background:'+h.hex+'"></span><span>'+h.label+'</span>'
+      +'<span class="gv">'+p.n+' · '+fmtDur(p.min)+'</span></div>'
+      +'<div class="progress"><i style="width:'+Math.max(3,pct)+'%;background:'+h.hex+'"></i></div></div>';
+  }).join('');
+  openModal('<h3>Dashboard</h3><p class="msub">Resumen de un mes y exportación de resultados.</p>'
+    +'<div class="field"><label>Mes</label><input id="dm_mes" type="month" value="'+mes+'" onchange="modalDashboard(this.value)" style="--fc:var(--accent-esc)"></div>'
+    +'<div class="kpis"><div class="kpi"><div class="n">'+acts.length+'</div><div class="k">Registros</div></div>'
+    +'<div class="kpi"><div class="n">'+fmtDur(totMin)+'</div><div class="k">Tiempo del mes</div></div></div>'
+    +(acts.length?('<div class="card" style="box-shadow:none"><div class="card-h"><span class="lbl">'+esc(nombreMes(mes))+'</span></div>'+rows+'</div>'
+      +'<button class="btn" onclick="exportMesCSV(\''+mes+'\')">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',17)+' Exportar CSV del mes</button>')
+      :'<div class="empty" style="padding:24px"><p>Sin registros en '+esc(nombreMes(mes))+'.</p></div>'));
+}
+function exportMesCSV(mes){
+  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,7)===mes);
+  const rows=[['Fecha','Aficion','Categoria','Descripcion','Duracion (min)']];
+  acts.forEach(a=>rows.push([a.fecha,HOBBIES[a.hobby]?HOBBIES[a.hobby].label:a.hobby,a.cat||'',(a.desc||'').replace(/\s+/g,' '),a.dur||0]));
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  download('bitacora_dashboard_'+mes+'.csv','\ufeff'+csv,'text/csv');
+  toast('CSV de '+nombreMes(mes)+' exportado');
+}
 
 /* --- libro --- */
 function modalLibro(id){
@@ -1538,6 +1714,8 @@ function delActivity(src,id,fromModal){
   if(src==='esc')DB.escritos=DB.escritos.filter(x=>x.id!==id);
   else if(src==='par')DB.parashot=DB.parashot.filter(x=>x.id!==id);
   else if(src==='libe')DB.librosEsp=DB.librosEsp.filter(x=>x.id!==id);
+  else if(src==='peli')DB.peliculas=DB.peliculas.filter(x=>x.id!==id);
+  else if(src==='serie')DB.series=DB.series.filter(x=>x.id!==id);
   else DB.registros=DB.registros.filter(x=>x.id!==id);
   saveDB();if(fromModal)closeModal();
   renderCurrent();
@@ -1551,7 +1729,7 @@ function openBackup(){
   const s=computeStats();
   openModal('<h3>Respaldo y datos</h3><p class="msub">Guarda una copia o restaura tu información en otro dispositivo.</p>'
     +'<div class="card" style="box-shadow:none;background:var(--surface-2);margin-bottom:14px"><div class="t3" style="font-family:var(--font-mono);color:var(--text-dim);display:flex;gap:16px;flex-wrap:wrap;font-size:12px">'
-    +'<span>'+DB.libros.length+' libros</span><span>'+DB.escritos.length+' escritos</span><span>'+DB.registros.length+' registros</span><span>'+(DB.parashot.length+DB.librosEsp.length)+' espiritual</span><span>'+fmtDur(s.totMin)+'</span></div></div>'
+    +'<span>'+DB.libros.length+' libros</span><span>'+DB.escritos.length+' escritos</span><span>'+DB.registros.length+' registros</span><span>'+(DB.peliculas.length+DB.series.length)+' cine</span><span>'+(DB.parashot.length+DB.librosEsp.length)+' espiritual</span></div></div>'
     +'<button class="btn" onclick="exportBackup()">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',17)+' Descargar respaldo (.json)</button>'
     +'<label class="btn ghost" style="margin-top:10px">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',17)+' Importar respaldo<input type="file" accept=".json,application/json" style="display:none" onchange="importBackup(event)"></label>'
     +'<p style="font-size:11.5px;color:var(--text-faint);margin-top:14px;line-height:1.5">Importar <b>reemplaza</b> todos los datos actuales por los del archivo. Haz un respaldo antes si tienes dudas.</p>'
@@ -1559,7 +1737,7 @@ function openBackup(){
     +'<button class="btn ghost" style="color:var(--accent-mma)" onclick="wipeData()">Borrar todos los datos</button>');
 }
 function exportBackup(){
-  const payload={app:'Bitacora',version:3,exportado:new Date().toISOString(),data:{ui:DB.ui,libros:DB.libros,escritos:DB.escritos,registros:DB.registros,parashot:DB.parashot,librosEsp:DB.librosEsp,metas:DB.metas,recordatorios:DB.recordatorios,config:DB.config}};
+  const payload={app:'Bitacora',version:4,exportado:new Date().toISOString(),data:{ui:DB.ui,libros:DB.libros,escritos:DB.escritos,registros:DB.registros,parashot:DB.parashot,librosEsp:DB.librosEsp,peliculas:DB.peliculas,series:DB.series,metas:DB.metas,recordatorios:DB.recordatorios,config:DB.config}};
   download('bitacora_respaldo_'+todayISO()+'.json',JSON.stringify(payload,null,2),'application/json');
   toast('Respaldo descargado');
 }
@@ -1576,6 +1754,8 @@ function importBackup(ev){
       DB.registros=Array.isArray(d.registros)?d.registros:[];
       DB.parashot=Array.isArray(d.parashot)?d.parashot:[];
       DB.librosEsp=Array.isArray(d.librosEsp)?d.librosEsp:[];
+      DB.peliculas=Array.isArray(d.peliculas)?d.peliculas:[];
+      DB.series=Array.isArray(d.series)?d.series:[];
       if(d.metas)DB.metas=d.metas;
       if(d.recordatorios)DB.recordatorios=d.recordatorios;
       if(d.config)DB.config=d.config;
@@ -1593,7 +1773,7 @@ function wipeData(){
     +'<button class="btn ghost" style="margin-top:10px" onclick="closeModal()">Cancelar</button>');
 }
 function confirmWipe(){
-  DB.libros=[];DB.escritos=[];DB.registros=[];DB.parashot=[];DB.librosEsp=[];saveDB();closeModal();go('panel');toast('Datos borrados');
+  DB.libros=[];DB.escritos=[];DB.registros=[];DB.parashot=[];DB.librosEsp=[];DB.peliculas=[];DB.series=[];saveDB();closeModal();go('panel');toast('Datos borrados');
 }
 function download(name,content,type){
   const blob=new Blob([content],{type:type});
