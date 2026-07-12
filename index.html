@@ -14,7 +14,7 @@
 <title>Bitácora — Aficiones</title>
 <style>
 :root{
-  --accent-lit:#C6821E; --accent-esc:#6D5AE6; --accent-mma:#D2413A; --accent-bai:#159A8C; --accent-esp:#2F80B8; --accent-cine:#7C4DD1;
+  --accent-lit:#C6821E; --accent-esc:#6D5AE6; --accent-mma:#D2413A; --accent-bai:#159A8C; --accent-esp:#2F80B8; --accent-cine:#7C4DD1; --accent-dib:#D6459A;
   --bg:#F5F3EE; --surface:#FFFFFF; --surface-2:#FBFAF7; --border:#E6E0D5;
   --text:#221F1A; --text-dim:#6B665C; --text-faint:#9C978C;
   --header-bg:rgba(255,255,255,.88);
@@ -50,29 +50,38 @@ input,select,textarea{font-family:inherit;font-size:15px}
 /* ---------- LOGIN ---------- */
 #lock{
   position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:32px;background:var(--bg);
-  text-align:center;
+  align-items:center;justify-content:center;padding:32px;
+  background:radial-gradient(130% 120% at 50% -10%, #1c2a45 0%, #0d1526 52%, #070b14 100%);
+  color:#EAF0FA;text-align:center;
 }
+#lock::before{content:"";position:absolute;top:-18%;left:50%;transform:translateX(-50%);
+  width:420px;height:420px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle, rgba(124,77,209,.30), transparent 62%);filter:blur(8px)}
+#lock>*{position:relative;z-index:1}
 #lock .mark{
-  width:76px;height:76px;border-radius:22px;display:grid;place-items:center;margin-bottom:22px;
+  width:80px;height:80px;border-radius:24px;display:grid;place-items:center;margin-bottom:24px;
   background:linear-gradient(150deg,var(--accent-lit),var(--accent-mma) 55%,var(--accent-esc));
-  box-shadow:var(--shadow);
+  box-shadow:0 10px 30px rgba(124,77,209,.45), inset 0 1px 0 rgba(255,255,255,.25);
 }
 #lock .mark svg{width:40px;height:40px;color:#fff}
-#lock h1{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:.2px}
-#lock .sub{color:var(--text-dim);margin:6px 0 30px;font-size:14px;max-width:290px}
-.pinbox{display:flex;gap:12px;margin-bottom:18px}
-.pindot{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--text-faint);transition:.15s}
-.pindot.on{background:var(--text);border-color:var(--text);transform:scale(1.05)}
-.pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;margin-top:6px}
+#lock h1{font-family:var(--font-display);font-size:31px;font-weight:600;letter-spacing:.2px;color:#F5F8FE}
+#lock .sub{color:#93A0BC;margin:7px 0 32px;font-size:14px;max-width:290px}
+.pinbox{display:flex;gap:14px;margin-bottom:18px}
+.pindot{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);transition:.18s}
+.pindot.on{background:linear-gradient(150deg,var(--accent-esc),var(--accent-cine));border-color:transparent;box-shadow:0 0 12px rgba(124,77,209,.7);transform:scale(1.08)}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:16px;margin-top:8px}
 .key{
-  height:64px;border-radius:50%;font-size:24px;font-weight:500;background:var(--surface);
-  border:1px solid var(--border);box-shadow:var(--shadow);transition:.1s;color:var(--text);
+  height:66px;border-radius:50%;font-size:24px;font-weight:500;color:#EAF0FA;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:.12s;
 }
-.key:active{transform:scale(.93);background:var(--surface-2)}
-.key.wide{font-size:14px;letter-spacing:.5px;color:var(--text-dim);box-shadow:none;background:transparent;border-color:transparent}
-.lock-note{margin-top:26px;font-size:12px;color:var(--text-faint);max-width:300px}
-.lock-err{color:var(--accent-mma);font-size:13px;min-height:18px;margin-top:2px}
+.key:active{transform:scale(.93);background:rgba(255,255,255,.16)}
+.key.wide{font-size:13px;letter-spacing:.5px;color:#93A0BC;background:transparent;border-color:transparent;backdrop-filter:none}
+.lock-note{margin-top:28px;font-size:12px;color:#6E7B96;max-width:300px;line-height:1.5}
+.lock-err{color:#FF6B6B;font-size:13px;min-height:18px;margin-top:2px}
+#lock .setup-field label{color:#AEB9D2}
+#lock .setup-field input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#EAF0FA}
+#lock .setup-field input::placeholder{color:#6E7B96}
 .setup-field{width:min(320px,80vw);margin:0 auto 14px;text-align:left}
 .setup-field label{font-size:12px;color:var(--text-dim);display:block;margin-bottom:5px;font-weight:600;letter-spacing:.3px}
 .setup-field input{
@@ -339,6 +348,15 @@ body[data-font="elegante"]{--font-display:"Baskerville","Hoefler Text","Big Casl
 .season .srow{display:flex;gap:8px;margin-bottom:8px}
 .season .srow select,.season .srow input{padding:9px 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
 .season textarea{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);min-height:60px;resize:vertical}
+/* dibujo */
+.thumb{width:52px;height:52px;border-radius:10px;object-fit:cover;flex:none;background:var(--surface-2);border:1px solid var(--border)}
+.dib-up{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1.5px dashed var(--border);border-radius:14px;padding:22px;background:var(--surface-2);color:var(--text-dim);cursor:pointer;text-align:center;font-size:13px}
+.dib-up:active{background:var(--border)}
+.dib-up svg{width:26px;height:26px;color:var(--text-faint)}
+.dib-prev{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.dib-prev img{width:100%;display:block;max-height:280px;object-fit:contain;background:var(--surface-2)}
+.dib-prev .rmimg{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;font-size:17px}
+.dib-full img{width:100%;border-radius:14px;border:1px solid var(--border);display:block;background:var(--surface-2)}
 </style>
 </head>
 <body data-theme="claro">
@@ -381,8 +399,8 @@ body[data-font="elegante"]{--font-display:"Baskerville","Hoefler Text","Big Casl
     <button class="icobtn" onclick="go('agenda')" title="Agenda">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
     </button>
-    <button class="icobtn" onclick="lockApp()" title="Bloquear">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    <button class="icobtn" onclick="go('panel')" title="Panel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
     </button>
   </header>
 
@@ -391,6 +409,7 @@ body[data-font="elegante"]{--font-display:"Baskerville","Hoefler Text","Big Casl
     <section class="view" id="v-agenda"></section>
     <section class="view" id="v-lit"></section>
     <section class="view" id="v-cine"></section>
+    <section class="view" id="v-dib"></section>
     <section class="view" id="v-mma"></section>
     <section class="view" id="v-bai"></section>
     <section class="view" id="v-espir"></section>
@@ -422,42 +441,50 @@ const HOBBIES={
   baile:{label:'Baile', short:'Baile', color:'var(--accent-bai)', hex:'#159A8C', view:'bai',
     icon:'<circle cx="12" cy="5" r="2"/><path d="M12 7v5l3 5M12 12l-3 5M9 9l6 0"/>'},
   espiritual:{label:'Espiritual', short:'Espiritual', color:'var(--accent-esp)', hex:'#2F80B8', view:'espir',
-    icon:'<path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>'}
+    icon:'<path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>'},
+  dibujo:{label:'Dibujo', short:'Dibujo', color:'var(--accent-dib)', hex:'#D6459A', view:'dib',
+    icon:'<path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/>'}
 };
 const ESC_ICON='<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>';
 const MMA_TIPOS=['Técnica','Sparring','Físico','Grappling','Cardio','Otro'];
 const BAILE_ESTILOS=['Bachata','Salsa','Merengue','Kizomba','Otro'];
 const ESC_TIPOS=['Diario','Sueño','Anécdota','Novela'];
 const LIB_ESTADOS=['Por leer','Leyendo','Terminado','Abandonado'];
-const DEFAULT_METAS={literatura:{tipo:'tiempo',valor:180},cine:{tipo:'sesiones',valor:0},mma:{tipo:'sesiones',valor:3},baile:{tipo:'tiempo',valor:120},espiritual:{tipo:'sesiones',valor:1}};
+const SERIE_TIPOS=['Novela','Anime','Acción'];
+const LIBRO_TIPOS=['Novela negra','Ficción','No ficción'];
+const DIBUJO_TIPOS=['Casual','Prototipo','Sueño'];
+const DEFAULT_METAS={literatura:{tipo:'tiempo',valor:180},cine:{tipo:'sesiones',valor:0},mma:{tipo:'sesiones',valor:3},baile:{tipo:'tiempo',valor:120},espiritual:{tipo:'sesiones',valor:1},dibujo:{tipo:'sesiones',valor:0}};
 const DEFAULT_REC={activo:true,dias:[0,1,2,3,4],hora:'19:00',notificar:false,parasha:{activo:true,dia:4}};
-const DEFAULT_CONFIG={escTipos:[...ESC_TIPOS],mmaTipos:[...MMA_TIPOS],baileEstilos:[...BAILE_ESTILOS],libroCampos:[]};
+const DEFAULT_CONFIG={escTipos:[...ESC_TIPOS],mmaTipos:[...MMA_TIPOS],baileEstilos:[...BAILE_ESTILOS],serieTipos:[...SERIE_TIPOS],libroTipos:[...LIBRO_TIPOS],dibujoTipos:[...DIBUJO_TIPOS],libroCampos:[]};
 
 /* ---- estado ---- */
 let DB, AUTH, pinBuf='', route='panel', filterHobby='todos', escFilter='todos', nudgeDismissed=false;
 let calYear=new Date().getFullYear(), calMonth=new Date().getMonth(), calSelected=null, deferredInstall=null;
-let litTab='lectura', cineTab='peliculas';
+let litTab='lectura', cineTab='peliculas', espirTab='parashot';
 
 /* ---- persistencia ---- */
 function nid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function loadDB(){
   try{const r=localStorage.getItem(DB_KEY);if(r)return JSON.parse(r)}catch(e){}
-  return {meta:{version:4,creado:new Date().toISOString()},ui:{tema:'claro',fuente:'clasica'},libros:[],escritos:[],registros:[],parashot:[],librosEsp:[],peliculas:[],series:[],
+  return {meta:{version:6,creado:new Date().toISOString()},ui:{tema:'claro',fuente:'clasica'},libros:[],escritos:[],registros:[],parashot:[],librosEsp:[],estudios:[],peliculas:[],series:[],dibujos:[],
     metas:JSON.parse(JSON.stringify(DEFAULT_METAS)),recordatorios:JSON.parse(JSON.stringify(DEFAULT_REC)),config:JSON.parse(JSON.stringify(DEFAULT_CONFIG))};
 }
 function ensureSchema(){
   if(!DB.ui)DB.ui={tema:'claro',fuente:'clasica'};
   if(!DB.ui.fuente)DB.ui.fuente='clasica';
   if(DB.ui.tema==='gris')DB.ui.tema='azul';
-  ['libros','escritos','registros','parashot','librosEsp','peliculas','series'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
+  ['libros','escritos','registros','parashot','librosEsp','peliculas','series','estudios','dibujos'].forEach(k=>{if(!Array.isArray(DB[k]))DB[k]=[]});
   if(!DB.metas)DB.metas=JSON.parse(JSON.stringify(DEFAULT_METAS));
   Object.keys(HOBBIES).forEach(k=>{if(!DB.metas[k])DB.metas[k]=(DEFAULT_METAS[k]?JSON.parse(JSON.stringify(DEFAULT_METAS[k])):{tipo:'tiempo',valor:0})});
   if(!DB.recordatorios)DB.recordatorios=JSON.parse(JSON.stringify(DEFAULT_REC));
   if(!Array.isArray(DB.recordatorios.dias))DB.recordatorios.dias=[0,1,2,3,4];
   if(!DB.recordatorios.parasha)DB.recordatorios.parasha={activo:true,dia:4};
   if(!DB.config)DB.config=JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-  ['escTipos','mmaTipos','baileEstilos'].forEach(k=>{if(!Array.isArray(DB.config[k]))DB.config[k]=[...DEFAULT_CONFIG[k]]});
+  ['escTipos','mmaTipos','baileEstilos','serieTipos','libroTipos','dibujoTipos'].forEach(k=>{if(!Array.isArray(DB.config[k]))DB.config[k]=[...(DEFAULT_CONFIG[k]||[])]});
   if(!Array.isArray(DB.config.libroCampos))DB.config.libroCampos=[];
+  // migración: fecha única -> fecha inicio en series y libros
+  DB.series.forEach(s=>{if(s.fecha&&!s.fechaInicio){s.fechaInicio=s.fecha}});
+  DB.libros.forEach(l=>{if(l.fecha&&!l.fechaInicio){l.fechaInicio=l.fecha}});
 }
 function saveDB(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){toast('No se pudo guardar')}}
 function loadAuth(){try{const r=localStorage.getItem(AUTH_KEY);if(r)return JSON.parse(r)}catch(e){}return null}
@@ -482,10 +509,14 @@ function allActivities(){
     desc:p.nombre||'Parashá',cat:'Parashá',src:'par'}));
   DB.librosEsp.forEach(l=>out.push({id:l.id,hobby:'espiritual',fecha:l.fecha,dur:l.duracionMin||0,
     desc:l.titulo||'Libro',cat:'Libro',src:'libe'}));
+  DB.estudios.forEach(e=>out.push({id:e.id,hobby:'espiritual',fecha:e.fecha,dur:e.duracionMin||0,
+    desc:e.titulo||'Estudio',cat:'Estudio',src:'estu'}));
   DB.peliculas.forEach(p=>out.push({id:p.id,hobby:'cine',fecha:p.fecha,dur:p.duracionMin||0,
     desc:p.nombre||'Película',cat:'Película',src:'peli'}));
-  DB.series.forEach(s=>out.push({id:s.id,hobby:'cine',fecha:s.fecha,dur:0,
+  DB.series.forEach(s=>out.push({id:s.id,hobby:'cine',fecha:s.fechaFin||s.fechaInicio||s.fecha,dur:0,
     desc:s.nombre||'Serie',cat:'Serie',src:'serie'}));
+  DB.dibujos.forEach(d=>out.push({id:d.id,hobby:'dibujo',fecha:d.fecha,dur:0,
+    desc:d.nombre||'Dibujo',cat:d.tipo||'Dibujo',src:'dib'}));
   return out.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
 }
 function catOf(r){
@@ -556,12 +587,12 @@ function enterApp(){
 function buildNav(){
   const nav=$('#nav'); nav.innerHTML='';
   const items=[
-    {id:'panel',label:'Panel',color:'var(--text)',icon:'<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'},
     {id:'lit',label:'Literatura',color:HOBBIES.literatura.color,icon:HOBBIES.literatura.icon},
     {id:'cine',label:'Cine',color:HOBBIES.cine.color,icon:HOBBIES.cine.icon},
     {id:'mma',label:'MMA',color:HOBBIES.mma.color,icon:HOBBIES.mma.icon},
     {id:'bai',label:'Baile',color:HOBBIES.baile.color,icon:HOBBIES.baile.icon},
-    {id:'espir',label:'Espiritual',color:HOBBIES.espiritual.color,icon:HOBBIES.espiritual.icon}
+    {id:'espir',label:'Espiritual',color:HOBBIES.espiritual.color,icon:HOBBIES.espiritual.icon},
+    {id:'dib',label:'Dibujo',color:HOBBIES.dibujo.color,icon:HOBBIES.dibujo.icon}
   ];
   items.forEach(it=>{
     const b=document.createElement('button');
@@ -574,13 +605,13 @@ function buildNav(){
 function go(r){
   route=r;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
-  const vid={panel:'v-panel',agenda:'v-agenda',lit:'v-lit',mma:'v-mma',bai:'v-bai',espir:'v-espir',cine:'v-cine',tabla:'v-tabla'}[r];
+  const vid={panel:'v-panel',agenda:'v-agenda',lit:'v-lit',mma:'v-mma',bai:'v-bai',espir:'v-espir',cine:'v-cine',dib:'v-dib',tabla:'v-tabla'}[r];
   $('#'+vid).classList.add('show');
   document.querySelectorAll('.nav-i').forEach(n=>n.classList.toggle('active',n.dataset.route===r));
   window.scrollTo(0,0);
-  ({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,tabla:renderTabla}[r])();
+  ({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,dib:renderDibujo,tabla:renderTabla}[r])();
 }
-function renderCurrent(){({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,tabla:renderTabla}[route]||renderPanel)()}
+function renderCurrent(){({panel:renderPanel,agenda:renderAgenda,lit:renderLit,mma:renderMma,bai:renderBai,espir:renderEspir,cine:renderCine,dib:renderDibujo,tabla:renderTabla}[route]||renderPanel)()}
 
 /* ============================================================
    TEMAS Y TIPOGRAFÍA
@@ -806,6 +837,7 @@ function renderPanel(){
     +miniHobby('mma',fmtDur(s.per.mma),s.cnt.mma+' entrenamientos')
     +miniHobby('baile',fmtDur(s.per.baile),s.cnt.baile+' prácticas')
     +miniHobby('espiritual',DB.parashot.length+' parashot',DB.librosEsp.length+' libros')
+    +miniHobby('dibujo',DB.dibujos.length+' dibujos','registrados')
     +'</div>';
 
   html+='<button class="btn ghost" onclick="go(\'tabla\')" style="margin-top:4px">'
@@ -899,12 +931,15 @@ function libroRow(l){
   const pct=l.paginas?Math.min(100,Math.round((l.paginaActual||0)/l.paginas*100)):0;
   const cc={'Leyendo':'#159A8C','Por leer':'#C6821E','Terminado':'#6D5AE6','Abandonado':'#9C978C'}[l.estado]||'#9C978C';
   const stars=l.valoracion?'★'.repeat(l.valoracion)+'☆'.repeat(5-l.valoracion):'';
+  const rango=(l.fechaInicio||l.fechaFin)?((l.fechaInicio?fmtDate(l.fechaInicio):'—')+' → '+(l.fechaFin?fmtDate(l.fechaFin):'—')):'';
   return '<div class="item">'
     +'<div class="ico" style="background:var(--accent-lit)">'+svgIco(HOBBIES.literatura.icon,17)+'</div>'
     +'<div class="body"><div class="t1">'+esc(l.titulo)
-    +' <span class="chip" style="background:'+cc+'22;color:'+cc+'">'+esc(l.estado)+'</span></div>'
+    +' <span class="chip" style="background:'+cc+'22;color:'+cc+'">'+esc(l.estado)+'</span>'
+    +(l.tipo?' <span class="chip" style="background:var(--accent-lit)22;color:var(--accent-lit)">'+esc(l.tipo)+'</span>':'')+'</div>'
     +(l.autor?'<div class="t2">'+esc(l.autor)+(stars?' · <span style="color:var(--accent-lit)">'+stars+'</span>':'')+'</div>':(stars?'<div class="t2" style="color:var(--accent-lit)">'+stars+'</div>':''))
-    +(l.paginas?'<div class="progress"><i style="width:'+pct+'%;background:'+cc+'"></i></div><div class="t3"><span>'+(l.paginaActual||0)+' / '+l.paginas+' págs · '+pct+'%</span></div>':'')
+    +(l.paginas?'<div class="progress"><i style="width:'+pct+'%;background:'+cc+'"></i></div>':'')
+    +((l.paginas||rango)?'<div class="t3">'+(l.paginas?'<span>'+(l.paginaActual||0)+' / '+l.paginas+' págs · '+pct+'%</span>':'')+(rango?'<span>'+rango+'</span>':'')+'</div>':'')
     +'</div>'
     +'<button class="del" onclick="modalLibro(\''+l.id+'\')">'+svgIco('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',16)+'</button>'
     +'</div>';
@@ -999,14 +1034,14 @@ function renderEspir(){
   const h=HOBBIES.espiritual;
   const paras=[...DB.parashot].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
   const libs=[...DB.librosEsp].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
+  const estudios=[...DB.estudios].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
   const califs=paras.filter(p=>p.calificacion).map(p=>p.calificacion);
   const prom=califs.length?(califs.reduce((a,b)=>a+b,0)/califs.length).toFixed(1):'—';
 
-  let html=viewHead('espiritual','Espiritual','Estudio semanal de la Toráh (Parashot) y lecturas de espiritualidad.');
+  let html=viewHead('espiritual','Espiritual','Estudio de la Toráh (Parashot), lecturas y estudios de espiritualidad.');
 
   // tarjeta de estudio semanal (parashá de la semana)
   const pSem=parashaSemana();
-  const h2=HOBBIES.espiritual;
   if(pSem){
     html+='<div class="nudge" style="border-left-color:var(--accent-esp);margin-bottom:16px"><div class="ni" style="background:var(--accent-esp)">'
       +svgIco('<path d="M20 6 9 17l-5-5"/>',17)+'</div>'
@@ -1015,7 +1050,7 @@ function renderEspir(){
   }else{
     const diaN=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'][(DB.recordatorios.parasha&&DB.recordatorios.parasha.dia)||4];
     html+='<div class="nudge" style="border-left-color:var(--accent-esp);margin-bottom:16px"><div class="ni" style="background:var(--accent-esp)">'
-      +svgIco(h2.icon,17)+'</div>'
+      +svgIco(h.icon,17)+'</div>'
       +'<div style="flex:1"><div style="font-weight:600;font-size:13.5px;margin-bottom:2px">Parashá de esta semana pendiente</div>'
       +'<div style="font-size:12.5px;color:var(--text-dim);line-height:1.5">Aún no la registras. Se estudia en Shabat.'
       +(parashaReminderOn()?' Te recuerdo prepararla el <b>'+diaN+'</b>.':'')+'</div>'
@@ -1027,24 +1062,55 @@ function renderEspir(){
     +kpi(prom,'Calificación','promedio ★')
     +'</div>';
 
-  html+='<div class="eyebrow" style="color:'+h.hex+';margin:6px 0 10px">Parashot</div>';
-  html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalParasha()">'
-    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir parashá</button>';
-  if(paras.length){
-    html+='<div class="card pad0">'+paras.map(parashaRow).join('')+'</div>';
-  }else{
-    html+=emptyState('Sin parashot','Registra el estudio de la porción semanal (se estudia en sábado).');
-  }
+  html+='<div class="seg">'
+    +'<button class="seg-b'+(espirTab==='parashot'?' on':'')+'" onclick="setEspirTab(\'parashot\')">Parashot</button>'
+    +'<button class="seg-b'+(espirTab==='libros'?' on':'')+'" onclick="setEspirTab(\'libros\')">Libros</button>'
+    +'<button class="seg-b'+(espirTab==='estudios'?' on':'')+'" onclick="setEspirTab(\'estudios\')">Estudios</button></div>';
 
-  html+='<div class="eyebrow" style="color:'+h.hex+';margin:22px 0 10px">Libros de espiritualidad</div>';
-  html+='<button class="btn ghost" style="margin-bottom:14px" onclick="modalLibroEsp()">'
-    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir libro</button>';
-  if(libs.length){
-    html+='<div class="card pad0">'+libs.map(libroEspRow).join('')+'</div>';
+  if(espirTab==='libros'){
+    html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalLibroEsp()">'
+      +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir libro</button>';
+    html+=libs.length?('<div class="card pad0">'+libs.map(libroEspRow).join('')+'</div>')
+      :emptyState('Sin libros','Añade una descripción de un libro de espiritualidad que leíste.');
+  }else if(espirTab==='estudios'){
+    html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalEstudio()">'
+      +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir estudio</button>';
+    html+=estudios.length?('<div class="card pad0">'+estudios.map(estudioRow).join('')+'</div>')
+      :emptyState('Sin estudios','Registra un estudio con título, fecha y descripción.');
   }else{
-    html+=emptyState('Sin libros','Añade una descripción de un libro de espiritualidad que leíste.');
+    html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalParasha()">'
+      +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir parashá</button>';
+    html+=paras.length?('<div class="card pad0">'+paras.map(parashaRow).join('')+'</div>')
+      :emptyState('Sin parashot','Registra el estudio de la porción semanal (se estudia en sábado).');
   }
   $('#v-espir').innerHTML=html;
+}
+function setEspirTab(t){espirTab=t;renderEspir()}
+function estudioRow(e){
+  const prev=(e.descripcion||'').replace(/\s+/g,' ').slice(0,90);
+  return '<div class="item" style="cursor:pointer" onclick="activityDetail(\'estu\',\''+e.id+'\')">'
+    +'<div class="ico" style="background:var(--accent-esp)">'+svgIco('<path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/>',17)+'</div>'
+    +'<div class="body"><div class="t1">'+esc(e.titulo||'Estudio')+'</div>'
+    +(prev?'<div class="t2">'+esc(prev)+(e.descripcion.length>90?'…':'')+'</div>':'')
+    +'<div class="t3"><span>'+fmtDate(e.fecha)+'</span>'+(e.duracionMin?'<span>'+fmtDur(e.duracionMin)+'</span>':'')+'</div></div>'
+    +'<button class="del" onclick="event.stopPropagation();delActivity(\'estu\',\''+e.id+'\')">'+svgIco('<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',16)+'</button></div>';
+}
+function modalEstudio(id){
+  const e=id?DB.estudios.find(x=>x.id===id):null;
+  openModal('<h3>'+(e?'Editar estudio':'Añadir estudio')+'</h3><p class="msub">Un estudio de espiritualidad.</p>'
+    +'<div class="row2"><div class="field"><label>Título</label><input id="es_tit" style="--fc:var(--accent-esp)" value="'+esc(e?e.titulo:'')+'" placeholder="Título del estudio"></div>'
+    +'<div class="field"><label>Fecha</label><input id="es_fecha" type="date" style="--fc:var(--accent-esp)" value="'+(e?e.fecha:todayISO())+'"></div></div>'
+    +'<div class="field"><label>Descripción</label><textarea id="es_des" style="--fc:var(--accent-esp);min-height:150px" placeholder="Desarrollo del estudio, ideas, conclusiones...">'+esc(e?e.descripcion:'')+'</textarea></div>'
+    +'<div class="field"><label>Tiempo (min)</label><input id="es_dur" type="number" min="0" style="--fc:var(--accent-esp)" value="'+(e?e.duracionMin||'':'')+'" placeholder="Opcional"></div>'
+    +'<button class="btn" style="background:var(--accent-esp)" onclick="saveEstudio('+(e?"'"+e.id+"'":'null')+')">Guardar</button>'
+    +(e?'<button class="btn ghost" style="margin-top:8px;color:var(--accent-mma)" onclick="delActivity(\'estu\',\''+e.id+'\',true)">Eliminar estudio</button>':''));
+}
+function saveEstudio(id){
+  const tit=$('#es_tit').value.trim();if(!tit){toast('Escribe el título');return}
+  const obj={titulo:tit,fecha:$('#es_fecha').value||todayISO(),descripcion:$('#es_des').value.trim(),duracionMin:+$('#es_dur').value||0};
+  if(id){const e=DB.estudios.find(x=>x.id===id);Object.assign(e,obj)}
+  else{obj.id=nid();DB.estudios.push(obj)}
+  saveDB();closeModal();renderCurrent();toast('Estudio guardado');
 }
 function parashaRow(p){
   const stars=p.calificacion?'★'.repeat(p.calificacion):'';
@@ -1154,11 +1220,13 @@ function serieRow(s){
   const temps=s.temporadas||[];
   const cals=temps.filter(t=>t.calificacion).map(t=>t.calificacion);
   const prom=cals.length?(cals.reduce((a,b)=>a+b,0)/cals.length):0;
+  const rango=(s.fechaInicio||s.fechaFin)?((s.fechaInicio?fmtDate(s.fechaInicio):'—')+' → '+(s.fechaFin?fmtDate(s.fechaFin):'—')):(s.fecha?fmtDate(s.fecha):'');
   return '<div class="item" style="cursor:pointer" onclick="activityDetail(\'serie\',\''+s.id+'\')">'
     +'<div class="ico" style="background:var(--accent-cine)">'+svgIco(HOBBIES.cine.icon,17)+'</div>'
-    +'<div class="body"><div class="t1">'+esc(s.nombre||'Serie')+' <span class="chip" style="background:var(--accent-cine)22;color:var(--accent-cine)">'+temps.length+' temp</span></div>'
+    +'<div class="body"><div class="t1">'+esc(s.nombre||'Serie')+' <span class="chip" style="background:var(--accent-cine)22;color:var(--accent-cine)">'+temps.length+' temp</span>'
+    +(s.tipo?' <span class="chip" style="background:var(--accent-cine)22;color:var(--accent-cine)">'+esc(s.tipo)+'</span>':'')+'</div>'
     +(prom?'<div class="t2" style="color:var(--accent-cine)">'+'★'.repeat(Math.round(prom))+' <span style="color:var(--text-faint)">('+prom.toFixed(1)+' prom)</span></div>':'')
-    +'<div class="t3"><span>'+fmtDate(s.fecha)+'</span></div></div>'
+    +'<div class="t3"><span>'+rango+'</span></div></div>'
     +'<button class="del" onclick="event.stopPropagation();delActivity(\'serie\',\''+s.id+'\')">'+svgIco('<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',16)+'</button></div>';
 }
 function modalPelicula(id){
@@ -1194,9 +1262,12 @@ function seasonBlock(t){
 function modalSerie(id){
   const s=id?DB.series.find(x=>x.id===id):null;
   const temps=(s&&s.temporadas&&s.temporadas.length)?s.temporadas:[{num:1,calificacion:0,resena:''}];
+  const tipos=DB.config.serieTipos||[];
   openModal('<h3>'+(s?'Editar serie':'Añadir serie')+'</h3><p class="msub">Calificación y reseña por temporada.</p>'
     +'<div class="row2"><div class="field"><label>Nombre</label><input id="se_nom" style="--fc:var(--accent-cine)" value="'+esc(s?s.nombre:'')+'" placeholder="Ej. Breaking Bad"></div>'
-    +'<div class="field"><label>Fecha</label><input id="se_fecha" type="date" style="--fc:var(--accent-cine)" value="'+(s?s.fecha:todayISO())+'"></div></div>'
+    +'<div class="field"><label>Tipo</label><select id="se_tipo" style="--fc:var(--accent-cine)"><option value="">—</option>'+tipos.map(t=>'<option'+(s&&s.tipo===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div></div>'
+    +'<div class="row2"><div class="field"><label>Fecha de inicio</label><input id="se_fini" type="date" style="--fc:var(--accent-cine)" value="'+(s?s.fechaInicio||'':'')+'"></div>'
+    +'<div class="field"><label>Fecha de fin</label><input id="se_ffin" type="date" style="--fc:var(--accent-cine)" value="'+(s?s.fechaFin||'':'')+'"></div></div>'
     +'<div class="eyebrow" style="margin:6px 0 10px">Temporadas</div>'
     +'<div id="seasonsWrap">'+temps.map(seasonBlock).join('')+'</div>'
     +'<button class="btn ghost btn-sm" style="width:auto;margin-bottom:14px" onclick="addSeason()">'+svgIco('<path d="M12 5v14M5 12h14"/>',15)+' Añadir temporada</button>'
@@ -1215,10 +1286,93 @@ function saveSerie(id){
     calificacion:+el.querySelector('.s-cal').value||0,
     resena:el.querySelector('.s-res').value.trim()
   }));
-  const obj={nombre:nom,fecha:$('#se_fecha').value||todayISO(),temporadas:temporadas};
+  const obj={nombre:nom,tipo:$('#se_tipo').value,fechaInicio:$('#se_fini').value,fechaFin:$('#se_ffin').value,temporadas:temporadas};
   if(id){const s=DB.series.find(x=>x.id===id);Object.assign(s,obj)}
   else{obj.id=nid();DB.series.push(obj)}
   saveDB();closeModal();renderCurrent();toast('Serie guardada');
+}
+
+/* ============================================================
+   DIBUJO
+   ============================================================ */
+let dibImg='';
+function renderDibujo(){
+  const h=HOBBIES.dibujo;
+  const dibs=[...DB.dibujos].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')||b.id.localeCompare(a.id));
+  const califs=dibs.filter(d=>d.calificacion).map(d=>d.calificacion);
+  const prom=califs.length?(califs.reduce((a,b)=>a+b,0)/califs.length).toFixed(1):'—';
+  let html=viewHead('dibujo','Dibujo','Registra tus dibujos con su tipo, calificación, reseña e imagen.');
+  html+='<div class="kpis">'+kpi(dibs.length,'Dibujos','registrados')+kpi(prom,'Calificación','promedio ★')+'</div>';
+  html+='<button class="btn" style="background:'+h.hex+';margin-bottom:14px" onclick="modalDibujo()">'
+    +svgIco('<path d="M12 5v14M5 12h14"/>',17)+' Añadir dibujo</button>';
+  if(dibs.length)html+='<div class="card pad0">'+dibs.map(dibujoRow).join('')+'</div>';
+  else html+=emptyState('Sin dibujos','Añade tu primer dibujo con su imagen.');
+  $('#v-dib').innerHTML=html;
+}
+function dibujoRow(d){
+  const stars=d.calificacion?'★'.repeat(d.calificacion):'';
+  return '<div class="item" style="cursor:pointer" onclick="activityDetail(\'dib\',\''+d.id+'\')">'
+    +(d.imagen?'<img class="thumb" src="'+d.imagen+'" alt="">':'<div class="ico" style="width:52px;height:52px;background:var(--accent-dib)">'+svgIco(HOBBIES.dibujo.icon,20)+'</div>')
+    +'<div class="body"><div class="t1">'+esc(d.nombre||'Dibujo')+(d.tipo?' <span class="chip" style="background:var(--accent-dib)22;color:var(--accent-dib)">'+esc(d.tipo)+'</span>':'')+'</div>'
+    +(stars?'<div class="t2" style="color:var(--accent-dib)">'+stars+'</div>':'')
+    +'<div class="t3"><span>'+fmtDate(d.fecha)+'</span></div></div>'
+    +'<button class="del" onclick="event.stopPropagation();delActivity(\'dib\',\''+d.id+'\')">'+svgIco('<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',16)+'</button></div>';
+}
+function modalDibujo(id){
+  const d=id?DB.dibujos.find(x=>x.id===id):null;
+  dibImg=(d&&d.imagen)||'';
+  const tipos=DB.config.dibujoTipos||[];
+  openModal('<h3>'+(d?'Editar dibujo':'Añadir dibujo')+'</h3><p class="msub">Registra tu dibujo con su imagen.</p>'
+    +'<div class="field"><label>Nombre del dibujo</label><input id="di_nom" style="--fc:var(--accent-dib)" value="'+esc(d?d.nombre:'')+'" placeholder="Ej. Retrato a lápiz"></div>'
+    +'<div class="row2"><div class="field"><label>Fecha</label><input id="di_fecha" type="date" style="--fc:var(--accent-dib)" value="'+(d?d.fecha:todayISO())+'"></div>'
+    +'<div class="field"><label>Tipo</label><select id="di_tipo" style="--fc:var(--accent-dib)"><option value="">—</option>'+tipos.map(t=>'<option'+(d&&d.tipo===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div></div>'
+    +'<div class="field"><label>Calificación</label><select id="di_cal" style="--fc:var(--accent-dib)"><option value="0">—</option>'+[1,2,3,4,5].map(n=>'<option value="'+n+'"'+(d&&d.calificacion===n?' selected':'')+'>'+'★'.repeat(n)+'</option>').join('')+'</select></div>'
+    +'<div class="field"><label>Reseña</label><textarea id="di_res" style="--fc:var(--accent-dib)" placeholder="Técnica, materiales, qué mejorarías...">'+esc(d?d.resena:'')+'</textarea></div>'
+    +'<div class="field"><label>Imagen</label><div id="di_imgwrap">'+dibImgHTML()+'</div>'
+    +'<input id="di_file" type="file" accept="image/*" style="display:none" onchange="onDibImage(this)"></div>'
+    +'<button class="btn" style="background:var(--accent-dib)" onclick="saveDibujo('+(d?"'"+d.id+"'":'null')+')">Guardar</button>'
+    +(d?'<button class="btn ghost" style="margin-top:8px;color:var(--accent-mma)" onclick="delActivity(\'dib\',\''+d.id+'\',true)">Eliminar dibujo</button>':''));
+}
+function dibImgHTML(){
+  if(dibImg)return '<div class="dib-prev"><img src="'+dibImg+'" alt=""><button class="rmimg" onclick="removeDibImage()">&times;</button></div>';
+  return '<div class="dib-up" onclick="document.getElementById(\'di_file\').click()">'
+    +svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',26)
+    +'<span>Toca para subir una imagen</span></div>';
+}
+function refreshDibImg(){const w=document.getElementById('di_imgwrap');if(w)w.innerHTML=dibImgHTML()}
+function onDibImage(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  compressImage(file,function(dataUrl){dibImg=dataUrl;refreshDibImg();},function(){toast('No se pudo cargar la imagen')});
+}
+function removeDibImage(){dibImg='';refreshDibImg()}
+function compressImage(file,ok,err){
+  try{
+    const rd=new FileReader();
+    rd.onerror=function(){err&&err()};
+    rd.onload=function(){
+      const img=new Image();
+      img.onerror=function(){err&&err()};
+      img.onload=function(){
+        const max=1000;let w=img.width,h=img.height;
+        if(w>max||h>max){if(w>=h){h=Math.round(h*max/w);w=max}else{w=Math.round(w*max/h);h=max}}
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        let out;try{out=cv.toDataURL('image/jpeg',0.82)}catch(e){out=rd.result}
+        ok(out);
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(file);
+  }catch(e){err&&err()}
+}
+function saveDibujo(id){
+  const nom=$('#di_nom').value.trim();if(!nom){toast('Escribe el nombre');return}
+  const obj={nombre:nom,fecha:$('#di_fecha').value||todayISO(),tipo:$('#di_tipo').value,
+    calificacion:+$('#di_cal').value||0,resena:$('#di_res').value.trim(),imagen:dibImg||''};
+  if(id){const d=DB.dibujos.find(x=>x.id===id);Object.assign(d,obj)}
+  else{obj.id=nid();DB.dibujos.push(obj)}
+  try{saveDB()}catch(e){}
+  closeModal();renderCurrent();toast('Dibujo guardado');
 }
 
 /* ============================================================
@@ -1330,8 +1484,10 @@ function activityDetail(src,id){
   if(src==='esc'){rec=DB.escritos.find(x=>x.id===id);hobby='literatura'}
   else if(src==='par'){rec=DB.parashot.find(x=>x.id===id);hobby='espiritual'}
   else if(src==='libe'){rec=DB.librosEsp.find(x=>x.id===id);hobby='espiritual'}
+  else if(src==='estu'){rec=DB.estudios.find(x=>x.id===id);hobby='espiritual'}
   else if(src==='peli'){rec=DB.peliculas.find(x=>x.id===id);hobby='cine'}
   else if(src==='serie'){rec=DB.series.find(x=>x.id===id);hobby='cine'}
+  else if(src==='dib'){rec=DB.dibujos.find(x=>x.id===id);hobby='dibujo'}
   else{rec=DB.registros.find(x=>x.id===id);hobby=rec?rec.hobby:null}
   if(!rec||!hobby){toast('Registro no encontrado');return}
   const h=HOBBIES[hobby];
@@ -1348,6 +1504,15 @@ function activityDetail(src,id){
     title=rec.titulo||'Libro';
     fields=[['Autor',rec.autor||'—'],['Calificación',rec.calificacion?'★'.repeat(rec.calificacion):'—'],['Tiempo',rec.duracionMin?fmtDur(rec.duracionMin):'—']];
     blockText=rec.descripcion||''; editCall='modalLibroEsp(\''+id+'\')';
+  }else if(src==='estu'){
+    title=rec.titulo||'Estudio';
+    fields=[['Tiempo',rec.duracionMin?fmtDur(rec.duracionMin):'—']];
+    blockText=rec.descripcion||''; editCall='modalEstudio(\''+id+'\')';
+  }else if(src==='dib'){
+    title=rec.nombre||'Dibujo';
+    fields=[['Tipo',rec.tipo||'—'],['Calificación',rec.calificacion?'★'.repeat(rec.calificacion):'—']];
+    blockLabel='Reseña'; blockText=rec.resena||''; editCall='modalDibujo(\''+id+'\')';
+    if(rec.imagen)extraHtml='<div class="eyebrow" style="margin:2px 0 8px">Imagen</div><div class="dib-full"><img src="'+rec.imagen+'" alt=""></div>';
   }else if(src==='peli'){
     title=rec.nombre||'Película';
     fields=[['Director',rec.director||'—'],['Año',rec.anio||'—'],['Calificación',rec.calificacion?'★'.repeat(rec.calificacion):'—']];
@@ -1355,7 +1520,7 @@ function activityDetail(src,id){
   }else if(src==='serie'){
     const temps=rec.temporadas||[];
     title=rec.nombre||'Serie';
-    fields=[['Temporadas',temps.length]];
+    fields=[['Tipo',rec.tipo||'—'],['Temporadas',temps.length],['Inicio',rec.fechaInicio?fmtDate(rec.fechaInicio):'—'],['Fin',rec.fechaFin?fmtDate(rec.fechaFin):'—']];
     editCall='modalSerie(\''+id+'\')';
     extraHtml=temps.map(t=>'<div class="season" style="background:var(--surface)"><div class="season-h"><b>Temporada '+esc(t.num)+'</b>'
       +(t.calificacion?'<span style="color:var(--accent-cine)">'+'★'.repeat(t.calificacion)+'</span>':'')+'</div>'
@@ -1375,10 +1540,11 @@ function activityDetail(src,id){
     fields=[['Estilo',rec.meta&&rec.meta.estilo||'—'],['Nivel / foco',(rec.meta&&rec.meta.nivel)||'—'],['Duración',rec.duracionMin?fmtDur(rec.duracionMin):'—']];
     blockText=rec.descripcion||''; editCall='modalBaile(\''+id+'\')';
   }
+  const hdate=(src==='serie')?(rec.fechaFin||rec.fechaInicio):rec.fecha;
   let html='<div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">'
     +'<div class="ico" style="width:40px;height:40px;border-radius:12px;background:'+h.hex+'">'+svgIco(h.icon,19)+'</div>'
     +'<div style="min-width:0;flex:1"><div style="font-weight:600;font-size:17px;font-family:var(--font-display);word-break:break-word">'+esc(title)+'</div>'
-    +'<div style="font-size:12px;color:var(--text-dim);margin-top:2px"><span class="chip" style="background:'+h.hex+'22;color:'+h.hex+'">'+h.label+'</span> · '+fmtDateLong(rec.fecha)+'</div></div></div>';
+    +'<div style="font-size:12px;color:var(--text-dim);margin-top:2px"><span class="chip" style="background:'+h.hex+'22;color:'+h.hex+'">'+h.label+'</span> · '+fmtDateLong(hdate)+'</div></div></div>';
   html+='<div class="card dl" style="box-shadow:none;padding:2px 15px;margin-bottom:14px">'+fields.map(f=>detailRow(f[0],f[1])).join('')+'</div>';
   if(blockText){
     html+='<div class="eyebrow" style="margin-bottom:8px">'+blockLabel+'</div><div class="detail-block">'+esc(blockText)+'</div>';
@@ -1424,6 +1590,7 @@ function openSettings(){
     +setRow('<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>','Dashboard','Resumen y exportación por mes','modalDashboard()')
     +setRow('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>','Respaldo y datos','Descargar o importar tu información','openBackup()');
   if(deferredInstall)html+=setRow('<path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="17" width="16" height="4" rx="1"/>','Instalar app','Añadir a tu dispositivo','doInstall()');
+  html+=setRow('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>','Bloquear','Salir y pedir el PIN','closeModal();lockApp()');
   openModal(html);
 }
 
@@ -1475,78 +1642,107 @@ function modalTema(){
 function pickTheme(name){applyTheme(name);modalTema();toast('Tema '+name)}
 
 /* --- Configuración de secciones --- */
-function chipEditor(listKey,items,removeFn){
+function chipEditor(listKey,items){
   return '<div class="chipedit">'+(items.length?items.map((it,i)=>'<span class="chipx">'+esc(it)
-    +'<button onclick="'+removeFn+'('+i+')">&times;</button></span>').join(''):'<span style="font-size:12.5px;color:var(--text-faint)">Sin elementos</span>')+'</div>'
+    +'<button onclick="removeConfig(\''+listKey+'\','+i+')">&times;</button></span>').join(''):'<span style="font-size:12.5px;color:var(--text-faint)">Sin elementos</span>')+'</div>'
     +'<div class="addline"><input id="add_'+listKey+'" placeholder="Añadir…" onkeydown="if(event.key===\'Enter\')addConfig(\''+listKey+'\')"><button onclick="addConfig(\''+listKey+'\')">Añadir</button></div>';
 }
 function modalSecciones(){
   const c=DB.config;
   const campos=c.libroCampos.map((f,i)=>'<span class="chipx">'+esc(f.label)+'<button onclick="removeLibroCampo('+i+')">&times;</button></span>').join('')
     || '<span style="font-size:12.5px;color:var(--text-faint)">Sin campos extra</span>';
+  const sep='<hr style="border:none;border-top:1px solid var(--border);margin:16px 0 14px">';
   let html='<h3>Configuración de secciones</h3><p class="msub">Personaliza los campos y tipos de cada afición.</p>';
-  html+='<div class="eyebrow" style="color:var(--accent-lit);margin-bottom:6px">Lectura — campos extra del libro</div>'
+  html+='<div class="eyebrow" style="color:var(--accent-lit);margin-bottom:6px">Literatura — tipos de libro</div>'+chipEditor('libroTipos',c.libroTipos);
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-lit);margin-bottom:6px">Literatura — campos extra del libro</div>'
     +'<div class="chipedit">'+campos+'</div>'
-    +'<div class="addline"><input id="add_libroCampo" placeholder="Ej. Género, Editorial, Año…" onkeydown="if(event.key===\'Enter\')addLibroCampo()"><button onclick="addLibroCampo()">Añadir</button></div>';
-  html+='<hr style="border:none;border-top:1px solid var(--border);margin:16px 0 14px">';
-  html+='<div class="eyebrow" style="color:var(--accent-esc);margin-bottom:6px">Escritura — tipos</div>'+chipEditor('escTipos',c.escTipos,'removeEsc');
-  html+='<hr style="border:none;border-top:1px solid var(--border);margin:16px 0 14px">';
-  html+='<div class="eyebrow" style="color:var(--accent-mma);margin-bottom:6px">MMA — tipos</div>'+chipEditor('mmaTipos',c.mmaTipos,'removeMma');
-  html+='<hr style="border:none;border-top:1px solid var(--border);margin:16px 0 14px">';
-  html+='<div class="eyebrow" style="color:var(--accent-bai);margin-bottom:6px">Baile — estilos</div>'+chipEditor('baileEstilos',c.baileEstilos,'removeBai');
+    +'<div class="addline"><input id="add_libroCampo" placeholder="Ej. Editorial, Saga, Idioma…" onkeydown="if(event.key===\'Enter\')addLibroCampo()"><button onclick="addLibroCampo()">Añadir</button></div>';
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-esc);margin-bottom:6px">Literatura — tipos de escritura</div>'+chipEditor('escTipos',c.escTipos);
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-cine);margin-bottom:6px">Cine — tipos de serie</div>'+chipEditor('serieTipos',c.serieTipos);
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-dib);margin-bottom:6px">Dibujo — tipos</div>'+chipEditor('dibujoTipos',c.dibujoTipos);
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-mma);margin-bottom:6px">MMA — tipos</div>'+chipEditor('mmaTipos',c.mmaTipos);
+  html+=sep+'<div class="eyebrow" style="color:var(--accent-bai);margin-bottom:6px">Baile — estilos</div>'+chipEditor('baileEstilos',c.baileEstilos);
   html+='<button class="btn" style="margin-top:16px" onclick="openSettings()">Listo</button>';
   openModal(html);
 }
 function addConfig(listKey){const v=$('#add_'+listKey).value.trim();if(!v)return;if(!DB.config[listKey].includes(v))DB.config[listKey].push(v);saveDB();modalSecciones()}
-function removeEsc(i){DB.config.escTipos.splice(i,1);saveDB();modalSecciones()}
-function removeMma(i){DB.config.mmaTipos.splice(i,1);saveDB();modalSecciones()}
-function removeBai(i){DB.config.baileEstilos.splice(i,1);saveDB();modalSecciones()}
+function removeConfig(listKey,i){DB.config[listKey].splice(i,1);saveDB();modalSecciones()}
 function addLibroCampo(){const v=$('#add_libroCampo').value.trim();if(!v)return;DB.config.libroCampos.push({id:nid(),label:v});saveDB();modalSecciones()}
 function removeLibroCampo(i){DB.config.libroCampos.splice(i,1);saveDB();modalSecciones()}
 
 /* --- Dashboard mensual (resumen + exportación) --- */
 function mesActualISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
 function nombreMes(mes){const p=mes.split('-');return MESES[+p[1]-1]+' '+p[0]}
-function modalDashboard(mes){
-  mes=mes||mesActualISO();
-  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,7)===mes);
+function modalDashboard(mode,value){
+  mode=mode||'mes';
+  if(mode==='mes')value=value||mesActualISO();
+  else value=value||String(new Date().getFullYear());
+  const prefix=value;
+  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,prefix.length)===prefix);
   const totMin=acts.reduce((s,a)=>s+a.dur,0);
   const per={};Object.keys(HOBBIES).forEach(k=>per[k]={min:0,n:0});
   acts.forEach(a=>{if(per[a.hobby]){per[a.hobby].min+=a.dur;per[a.hobby].n++}});
-  let rows=Object.keys(HOBBIES).map(k=>{
+  const rows=Object.keys(HOBBIES).map(k=>{
     const p=per[k],h=HOBBIES[k];if(p.n===0)return '';
     const pct=totMin?Math.round(p.min/totMin*100):0;
     return '<div class="goal"><div class="goal-top"><span class="dot" style="background:'+h.hex+'"></span><span>'+h.label+'</span>'
       +'<span class="gv">'+p.n+' · '+fmtDur(p.min)+'</span></div>'
       +'<div class="progress"><i style="width:'+Math.max(3,pct)+'%;background:'+h.hex+'"></i></div></div>';
   }).join('');
-  openModal('<h3>Dashboard</h3><p class="msub">Resumen de un mes y exportación de resultados.</p>'
-    +'<div class="field"><label>Mes</label><input id="dm_mes" type="month" value="'+mes+'" onchange="modalDashboard(this.value)" style="--fc:var(--accent-esc)"></div>'
+  const titulo=mode==='mes'?nombreMes(value):('Año '+value);
+
+  let picker;
+  if(mode==='mes'){
+    picker='<div class="field"><label>Mes</label><input id="dm_val" type="month" value="'+value+'" onchange="modalDashboard(\'mes\',this.value)" style="--fc:var(--accent-esc)"></div>';
+  }else{
+    picker='<div class="field"><label>Año</label><input id="dm_val" type="number" min="2000" max="2100" value="'+value+'" onchange="modalDashboard(\'anio\',this.value)" style="--fc:var(--accent-esc)"></div>';
+  }
+
+  // barras por mes (solo informe anual)
+  let bars='';
+  if(mode==='anio'&&acts.length){
+    const mm=new Array(12).fill(0);
+    acts.forEach(a=>{const i=+a.fecha.slice(5,7)-1;if(i>=0&&i<12)mm[i]+=a.dur});
+    const max=Math.max(60,...mm);
+    bars='<div class="card" style="box-shadow:none"><div class="card-h"><span class="lbl">Tiempo por mes</span></div><div class="bars">'
+      +mm.map((v,i)=>{const hgt=Math.max(3,Math.round(v/max*100));const lab=['E','F','M','A','M','J','J','A','S','O','N','D'][i];
+        return '<div class="bar-col"><span class="bar-v">'+(v?Math.round(v/60*10)/10:'')+'</span><div class="bar" style="height:'+hgt+'%;background:var(--accent-esc)"></div><span class="bar-x">'+lab+'</span></div>';}).join('')
+      +'</div></div>';
+  }
+
+  openModal('<h3>Dashboard</h3><p class="msub">Resumen y exportación de tus resultados.</p>'
+    +'<div class="seg"><button class="seg-b'+(mode==='mes'?' on':'')+'" onclick="modalDashboard(\'mes\')">Mensual</button>'
+    +'<button class="seg-b'+(mode==='anio'?' on':'')+'" onclick="modalDashboard(\'anio\')">Anual</button></div>'
+    +picker
     +'<div class="kpis"><div class="kpi"><div class="n">'+acts.length+'</div><div class="k">Registros</div></div>'
-    +'<div class="kpi"><div class="n">'+fmtDur(totMin)+'</div><div class="k">Tiempo del mes</div></div></div>'
-    +(acts.length?('<div class="card" style="box-shadow:none"><div class="card-h"><span class="lbl">'+esc(nombreMes(mes))+'</span></div>'+rows+'</div>'
-      +'<button class="btn" onclick="exportMesCSV(\''+mes+'\')">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',17)+' Exportar CSV del mes</button>')
-      :'<div class="empty" style="padding:24px"><p>Sin registros en '+esc(nombreMes(mes))+'.</p></div>'));
+    +'<div class="kpi"><div class="n">'+fmtDur(totMin)+'</div><div class="k">Tiempo total</div></div></div>'
+    +(acts.length?('<div class="card" style="box-shadow:none"><div class="card-h"><span class="lbl">'+esc(titulo)+'</span></div>'+rows+'</div>'+bars
+      +'<button class="btn" onclick="exportPeriodoCSV(\''+prefix+'\',\''+mode+'\')">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',17)+' Exportar informe '+(mode==='mes'?'mensual':'anual')+' (CSV)</button>')
+      :'<div class="empty" style="padding:24px"><p>Sin registros en '+esc(titulo)+'.</p></div>'));
 }
-function exportMesCSV(mes){
-  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,7)===mes);
+function exportPeriodoCSV(prefix,mode){
+  const acts=allActivities().filter(a=>a.fecha&&a.fecha.slice(0,prefix.length)===prefix);
   const rows=[['Fecha','Aficion','Categoria','Descripcion','Duracion (min)']];
   acts.forEach(a=>rows.push([a.fecha,HOBBIES[a.hobby]?HOBBIES[a.hobby].label:a.hobby,a.cat||'',(a.desc||'').replace(/\s+/g,' '),a.dur||0]));
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
-  download('bitacora_dashboard_'+mes+'.csv','\ufeff'+csv,'text/csv');
-  toast('CSV de '+nombreMes(mes)+' exportado');
+  download('bitacora_informe_'+prefix+'.csv','\ufeff'+csv,'text/csv');
+  toast('Informe '+(mode==='mes'?'de '+nombreMes(prefix):'de '+prefix)+' exportado');
 }
 
 /* --- libro --- */
 function modalLibro(id){
   const l=id?DB.libros.find(x=>x.id===id):null;
   const extra=(l&&l.extra)||{};
+  const tipos=DB.config.libroTipos||[];
   const camposHtml=DB.config.libroCampos.map(f=>'<div class="field"><label>'+esc(f.label)+'</label><input id="fc_'+f.id+'" style="--fc:var(--accent-lit)" value="'+esc(extra[f.id]||'')+'" placeholder="Opcional"></div>').join('');
   openModal('<h3>'+(l?'Editar libro':'Añadir libro')+'</h3><p class="msub">Tu biblioteca personal.</p>'
     +'<div class="field"><label>Título</label><input id="f_tit" style="--fc:var(--accent-lit)" value="'+esc(l?l.titulo:'')+'" placeholder="Ej. Cien años de soledad"></div>'
-    +'<div class="field"><label>Autor</label><input id="f_aut" style="--fc:var(--accent-lit)" value="'+esc(l?l.autor:'')+'" placeholder="Opcional"></div>'
+    +'<div class="row2"><div class="field"><label>Autor</label><input id="f_aut" style="--fc:var(--accent-lit)" value="'+esc(l?l.autor:'')+'" placeholder="Opcional"></div>'
+    +'<div class="field"><label>Tipo</label><select id="f_tipo" style="--fc:var(--accent-lit)"><option value="">—</option>'+tipos.map(t=>'<option'+(l&&l.tipo===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div></div>'
     +'<div class="row2"><div class="field"><label>Estado</label><select id="f_est" style="--fc:var(--accent-lit)">'+LIB_ESTADOS.map(e=>'<option'+(l&&l.estado===e?' selected':(!l&&e==='Leyendo'?' selected':''))+'>'+e+'</option>').join('')+'</select></div>'
     +'<div class="field"><label>Valoración</label><select id="f_val" style="--fc:var(--accent-lit)"><option value="0">—</option>'+[1,2,3,4,5].map(n=>'<option value="'+n+'"'+(l&&l.valoracion===n?' selected':'')+'>'+'★'.repeat(n)+'</option>').join('')+'</select></div></div>'
+    +'<div class="row2"><div class="field"><label>Fecha de inicio</label><input id="f_fini" type="date" style="--fc:var(--accent-lit)" value="'+(l?l.fechaInicio||'':'')+'"></div>'
+    +'<div class="field"><label>Fecha de fin</label><input id="f_ffin" type="date" style="--fc:var(--accent-lit)" value="'+(l?l.fechaFin||'':'')+'"></div></div>'
     +'<div class="row2"><div class="field"><label>Página actual</label><input id="f_pa" type="number" min="0" style="--fc:var(--accent-lit)" value="'+(l?l.paginaActual||'':'')+'" placeholder="0"></div>'
     +'<div class="field"><label>Páginas totales</label><input id="f_pt" type="number" min="0" style="--fc:var(--accent-lit)" value="'+(l?l.paginas||'':'')+'" placeholder="0"></div></div>'
     +camposHtml
@@ -1558,8 +1754,9 @@ function saveLibro(id){
   const tit=$('#f_tit').value.trim();if(!tit){toast('Escribe el título');return}
   const extra={};DB.config.libroCampos.forEach(f=>{const el=$('#fc_'+f.id);if(el&&el.value.trim())extra[f.id]=el.value.trim()});
   const prev=id?DB.libros.find(x=>x.id===id):null;
-  const obj={titulo:tit,autor:$('#f_aut').value.trim(),estado:$('#f_est').value,
+  const obj={titulo:tit,autor:$('#f_aut').value.trim(),tipo:$('#f_tipo').value,estado:$('#f_est').value,
     valoracion:+$('#f_val').value||0,paginaActual:+$('#f_pa').value||0,paginas:+$('#f_pt').value||0,
+    fechaInicio:$('#f_fini').value,fechaFin:$('#f_ffin').value,
     notas:$('#f_not').value.trim(),extra:extra,fecha:(prev&&prev.fecha)||todayISO()};
   if(id){Object.assign(prev,obj)}else{obj.id=nid();DB.libros.push(obj)}
   saveDB();closeModal();renderCurrent();toast('Libro guardado');
@@ -1714,8 +1911,10 @@ function delActivity(src,id,fromModal){
   if(src==='esc')DB.escritos=DB.escritos.filter(x=>x.id!==id);
   else if(src==='par')DB.parashot=DB.parashot.filter(x=>x.id!==id);
   else if(src==='libe')DB.librosEsp=DB.librosEsp.filter(x=>x.id!==id);
+  else if(src==='estu')DB.estudios=DB.estudios.filter(x=>x.id!==id);
   else if(src==='peli')DB.peliculas=DB.peliculas.filter(x=>x.id!==id);
   else if(src==='serie')DB.series=DB.series.filter(x=>x.id!==id);
+  else if(src==='dib')DB.dibujos=DB.dibujos.filter(x=>x.id!==id);
   else DB.registros=DB.registros.filter(x=>x.id!==id);
   saveDB();if(fromModal)closeModal();
   renderCurrent();
@@ -1729,7 +1928,7 @@ function openBackup(){
   const s=computeStats();
   openModal('<h3>Respaldo y datos</h3><p class="msub">Guarda una copia o restaura tu información en otro dispositivo.</p>'
     +'<div class="card" style="box-shadow:none;background:var(--surface-2);margin-bottom:14px"><div class="t3" style="font-family:var(--font-mono);color:var(--text-dim);display:flex;gap:16px;flex-wrap:wrap;font-size:12px">'
-    +'<span>'+DB.libros.length+' libros</span><span>'+DB.escritos.length+' escritos</span><span>'+DB.registros.length+' registros</span><span>'+(DB.peliculas.length+DB.series.length)+' cine</span><span>'+(DB.parashot.length+DB.librosEsp.length)+' espiritual</span></div></div>'
+    +'<span>'+DB.libros.length+' libros</span><span>'+DB.escritos.length+' escritos</span><span>'+(DB.peliculas.length+DB.series.length)+' cine</span><span>'+DB.dibujos.length+' dibujos</span><span>'+(DB.parashot.length+DB.librosEsp.length+DB.estudios.length)+' espiritual</span></div></div>'
     +'<button class="btn" onclick="exportBackup()">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',17)+' Descargar respaldo (.json)</button>'
     +'<label class="btn ghost" style="margin-top:10px">'+svgIco('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',17)+' Importar respaldo<input type="file" accept=".json,application/json" style="display:none" onchange="importBackup(event)"></label>'
     +'<p style="font-size:11.5px;color:var(--text-faint);margin-top:14px;line-height:1.5">Importar <b>reemplaza</b> todos los datos actuales por los del archivo. Haz un respaldo antes si tienes dudas.</p>'
@@ -1737,7 +1936,7 @@ function openBackup(){
     +'<button class="btn ghost" style="color:var(--accent-mma)" onclick="wipeData()">Borrar todos los datos</button>');
 }
 function exportBackup(){
-  const payload={app:'Bitacora',version:4,exportado:new Date().toISOString(),data:{ui:DB.ui,libros:DB.libros,escritos:DB.escritos,registros:DB.registros,parashot:DB.parashot,librosEsp:DB.librosEsp,peliculas:DB.peliculas,series:DB.series,metas:DB.metas,recordatorios:DB.recordatorios,config:DB.config}};
+  const payload={app:'Bitacora',version:6,exportado:new Date().toISOString(),data:{ui:DB.ui,libros:DB.libros,escritos:DB.escritos,registros:DB.registros,parashot:DB.parashot,librosEsp:DB.librosEsp,estudios:DB.estudios,peliculas:DB.peliculas,series:DB.series,dibujos:DB.dibujos,metas:DB.metas,recordatorios:DB.recordatorios,config:DB.config}};
   download('bitacora_respaldo_'+todayISO()+'.json',JSON.stringify(payload,null,2),'application/json');
   toast('Respaldo descargado');
 }
@@ -1754,8 +1953,10 @@ function importBackup(ev){
       DB.registros=Array.isArray(d.registros)?d.registros:[];
       DB.parashot=Array.isArray(d.parashot)?d.parashot:[];
       DB.librosEsp=Array.isArray(d.librosEsp)?d.librosEsp:[];
+      DB.estudios=Array.isArray(d.estudios)?d.estudios:[];
       DB.peliculas=Array.isArray(d.peliculas)?d.peliculas:[];
       DB.series=Array.isArray(d.series)?d.series:[];
+      DB.dibujos=Array.isArray(d.dibujos)?d.dibujos:[];
       if(d.metas)DB.metas=d.metas;
       if(d.recordatorios)DB.recordatorios=d.recordatorios;
       if(d.config)DB.config=d.config;
@@ -1773,7 +1974,7 @@ function wipeData(){
     +'<button class="btn ghost" style="margin-top:10px" onclick="closeModal()">Cancelar</button>');
 }
 function confirmWipe(){
-  DB.libros=[];DB.escritos=[];DB.registros=[];DB.parashot=[];DB.librosEsp=[];DB.peliculas=[];DB.series=[];saveDB();closeModal();go('panel');toast('Datos borrados');
+  DB.libros=[];DB.escritos=[];DB.registros=[];DB.parashot=[];DB.librosEsp=[];DB.estudios=[];DB.peliculas=[];DB.series=[];DB.dibujos=[];saveDB();closeModal();go('panel');toast('Datos borrados');
 }
 function download(name,content,type){
   const blob=new Blob([content],{type:type});
